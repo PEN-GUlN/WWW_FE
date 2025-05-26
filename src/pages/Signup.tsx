@@ -205,6 +205,7 @@ const Signup = () => {
               disabled={
                 !mail || !password || !checkPassword || !interest.length
               }
+              onClick={handleSubmit}
             >
               회원가입
             </Button>
