@@ -41,53 +41,42 @@ const Header = () => {
       }`}
     >
       <div className="container px-4 md:px-6 mx-auto flex items-center justify-between">
+        {/* 로고 */}
         <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
           <img src={Logo} alt="logo" className="h-8 w-auto" />
         </Link>
 
-        {/* 네비게이션 메뉴 (로그인/회원가입 페이지에서는 숨김) */}
+        {/* 메뉴 (로그인/회원가입 페이지에서는 전체 숨김) */}
         {!isAuthPage && (
           <div className="hidden md:flex items-center gap-8">
-            <div className="flex items-center gap-6">
-              {NAVIGATION_ROUTES.map(({ path, label }) => (
-                <Link
-                  key={path}
-                  to={path}
-                  className={`text-sm font-medium hover:text-brand-yellow ${
-                    isActive(path) ? "text-brand-yellow" : ""
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
+            {isLoggedIn && (
+              <div className="flex items-center gap-6">
+                {NAVIGATION_ROUTES.map(({ path, label }) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    className={`text-sm font-medium hover:text-brand-yellow ${
+                      isActive(path) ? "text-brand-yellow" : ""
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
-        {/* 로그인 상태에 따른 버튼 */}
+        {/* 로그인/회원가입 또는 홈 버튼 */}
         {!isAuthPage && (
           <div className="hidden md:flex items-center gap-4">
             {isLoggedIn ? (
-              <>
-                <button
-                  onClick={() => navigate("/")}
-                  className="text-sm font-medium"
-                >
-                  홈
-                </button>
-                <button
-                  onClick={() => navigate("/jobs")}
-                  className="text-sm font-medium text-red-500"
-                >
-                  채용공고
-                </button>
-                <button
-                  onClick={() => navigate("/community")}
-                  className="text-sm font-medium text-red-500"
-                >
-                  커뮤니티
-                </button>
-              </>
+              <button
+                onClick={() => navigate("/")}
+                className="text-sm font-medium"
+              >
+                홈
+              </button>
             ) : (
               <>
                 <Link to="/login">
