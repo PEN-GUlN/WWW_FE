@@ -4,6 +4,7 @@ const BASEURL = "http://localhost:8880";
 
 export const authInstance = axios.create({
   baseURL: BASEURL,
+  withCredentials: true,
 });
 
 const getSessionIdFromCookies = (): string | undefined => {

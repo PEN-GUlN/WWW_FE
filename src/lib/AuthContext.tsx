@@ -13,32 +13,33 @@ export const AuthContext = createContext<AuthContextType>({
   logout: () => {},
 });
 
-type AuthChildrenType = { children: React.ReactNode };
+type AuthChildrenType = {
+  children: React.ReactNode;
+};
 
 export const AuthProvider = ({ children }: AuthChildrenType) => {
-  const [isLoggedIn, setIsLogIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const checkSession = async () => {
-      const session = cookie.get("SESSION_ID");
-      if (session) {
-        setIsLogIn(true);
-      }
-    };
     checkSession();
   }, []);
 
+  const checkSession = () => {
+    const session = cookie.get("SESSION_ID");
+    setIsLoggedIn(!!session);
+  };
+
   const isLogin = () => {
-    setIsLogIn(true);
+    checkSession();
   };
 
   const logout = () => {
     cookie.remove("SESSION_ID");
-    setIsLogIn(false);
+    setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, isLogin, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );
