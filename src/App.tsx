@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Jobs from "./pages/Job/Jobs";
@@ -13,6 +12,7 @@ import Community from "./pages/Community";
 import CommunityPostDetail from "./pages/CommunityPostDetail";
 import CommunityWrite from "./pages/CommunityWrite";
 import NotFound from "./pages/NotFound";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +23,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/jobs" element={<Jobs />} />
