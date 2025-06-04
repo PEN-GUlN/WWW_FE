@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import DOMPurify from "dompurify";
 import {
   MessageCircle,
   ArrowLeft,
@@ -224,7 +225,11 @@ const CommunityPostDetail = () => {
 
           {/* 게시글 내용 */}
           <div className="prose max-w-none mb-8">
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.content),
+              }}
+            />
           </div>
 
           {/* 첨부파일 다운로드 (존재하는 경우) */}

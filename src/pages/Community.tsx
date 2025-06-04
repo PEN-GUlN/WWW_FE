@@ -92,7 +92,7 @@ const mockPosts = [
   },
 ];
 
-// Tag options
+// 태그 옵션 목록
 const tagOptions = [
   { value: "interview", label: "면접후기" },
   { value: "portfolio", label: "포트폴리오" },

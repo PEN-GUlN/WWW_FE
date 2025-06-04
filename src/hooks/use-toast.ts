@@ -87,8 +87,8 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action;
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
+      // 사이드 이펙트로 토스트를 제거하는 타이머를 설정
+      // Tost가 닫힐 때마다 타이머를 설정하여 일정 시간 후에 제거
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {

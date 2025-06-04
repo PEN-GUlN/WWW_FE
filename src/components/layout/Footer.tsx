@@ -127,7 +127,7 @@ const Footer = () => {
           </p>
           <div className="flex items-center gap-6">
             <a
-              href="#"
+              href="https://github.com/meltapplee"
               className="text-brand-gray-500 hover:text-brand-yellow transition-colors"
             >
               <svg

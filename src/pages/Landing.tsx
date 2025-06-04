@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Briefcase, Users } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import VoteIcon from "@/components/\bicon/VoteIcon";
+import CommentIcon from "@/components/\bicon/CommnetIcon";
+
+const navigate = useNavigate();
 
 const Landing = () => {
   return (
@@ -23,23 +27,22 @@ const Landing = () => {
               커뮤니티에 참여하세요.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/jobs">
-                <Button
-                  className="bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-200"
-                  size="lg"
-                >
-                  채용공고 보기
-                </Button>
-              </Link>
-              <Link to="/signup">
-                <Button
-                  variant="outline"
-                  className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
-                  size="lg"
-                >
-                  회원가입하기
-                </Button>
-              </Link>
+              <Button
+                className="bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-200"
+                size="lg"
+                onClick={() => navigate("/jobs")}
+              >
+                채용공고 보기
+              </Button>
+
+              <Button
+                variant="outline"
+                className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
+                size="lg"
+                onClick={() => navigate("/signup")}
+              >
+                회원가입하기
+              </Button>
             </div>
           </div>
         </div>
@@ -171,7 +174,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Community Highlight */}
+      {/* 커뮤니티 인기글 */}
       <section className="py-20 md:py-32 bg-white">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
@@ -217,40 +220,11 @@ const Landing = () => {
                     </p>
                     <div className="flex items-center gap-4 text-brand-gray-500 text-sm">
                       <span className="flex items-center gap-1">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M7 10.5L12 15.5L17 10.5"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            transform="rotate(90 12 12)"
-                          />
-                        </svg>
+                        <VoteIcon />
                         42
                       </span>
                       <span className="flex items-center gap-1">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.4876 3.36093 14.891 4 16.1272L3 21L7.8728 20C9.10904 20.6391 10.5124 21 12 21Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <CommentIcon />
                         16
                       </span>
                     </div>
@@ -262,7 +236,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA 섹션 */}
       <section className="py-20 md:py-32 bg-brand-yellow/10">
         <div className="container px-4 md:px-6">
           <div className="max-w-3xl mx-auto text-center">

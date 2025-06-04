@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import Jobs from "./pages/Job/Jobs";
 import JobDetail from "./pages/Job/JobDetail";
 import Community from "./pages/Community";
@@ -13,6 +12,7 @@ import CommunityPostDetail from "./pages/CommunityPostDetail";
 import CommunityWrite from "./pages/CommunityWrite";
 import NotFound from "./pages/NotFound";
 import Landing from "./pages/Landing";
+import Signup from "./pages/Signup";
 
 const queryClient = new QueryClient();
 

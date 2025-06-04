@@ -79,7 +79,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 
           <div className="flex items-center justify-between">
             <div className="text-sm text-brand-gray-600">
-              <span className="font-medium">${job.salary}</span>
+              <span className="font-medium">${formatSalary(job.salary)}</span>
             </div>
             <div className="text-xs text-brand-gray-500">{job.deadline}</div>
           </div>
@@ -90,3 +90,13 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 };
 
 export default JobCard;
+
+const formatSalary = (salary: string) => {
+  const [min, max] = salary.split("~").map((s) => s.trim());
+
+  if (min === max) {
+    return `${Number(min).toLocaleString()}`;
+  }
+
+  return `${Number(min).toLocaleString()} ~ ${Number(max).toLocaleString()}`;
+};

@@ -31,21 +31,33 @@ import {
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-// Tag options
+// 태그 옵션
+const tagCategories = {
+  postTypes: [
+    { value: "interview", label: "면접후기" },
+    { value: "portfolio", label: "포트폴리오" },
+    { value: "resume", label: "이력서" },
+    { value: "experience", label: "취업경험" },
+    { value: "tip", label: "취업팁" },
+  ],
+  locations: [
+    { value: "usa", label: "미국취업" },
+    { value: "japan", label: "일본취업" },
+    { value: "singapore", label: "싱가포르취업" },
+    { value: "europe", label: "유럽취업" },
+  ],
+  industries: [
+    { value: "software", label: "소프트웨어" },
+    { value: "finance", label: "금융" },
+    { value: "manufacturing", label: "제조" },
+    { value: "medical", label: "의료" },
+  ],
+};
+
 const tagOptions = [
-  { value: "interview", label: "면접후기" },
-  { value: "portfolio", label: "포트폴리오" },
-  { value: "resume", label: "이력서" },
-  { value: "experience", label: "취업경험" },
-  { value: "tip", label: "취업팁" },
-  { value: "usa", label: "미국취업" },
-  { value: "japan", label: "일본취업" },
-  { value: "singapore", label: "싱가포르취업" },
-  { value: "europe", label: "유럽취업" },
-  { value: "software", label: "소프트웨어" },
-  { value: "finance", label: "금융" },
-  { value: "manufacturing", label: "제조" },
-  { value: "medical", label: "의료" },
+  ...tagCategories.postTypes,
+  ...tagCategories.locations,
+  ...tagCategories.industries,
 ];
 
 // 게시글 작성 폼의 값 타입 정의
@@ -81,13 +93,32 @@ const CommunityWrite = () => {
   };
 
   const handleAddCustomTag = (e: React.FormEvent) => {
+    const trimmedTag = customTag.trim();
+
+    // 태그 길이 검증
+    if (trimmedTag.length < 2) {
+      toast.error("태그는 최소 2자 이상이어야 합니다.");
+      return;
+    }
+
+    if (trimmedTag.length > 20) {
+      toast.error("태그는 20자를 초과할 수 없습니다.");
+      return;
+    }
+
+    // 특수문자 검증
+    const tagRegex = /^[가-힣a-zA-Z0-9\s]+$/;
+    if (!tagRegex.test(trimmedTag)) {
+      toast.error("태그는 한글, 영문, 숫자만 사용 가능합니다.");
+      return;
+    }
     e.preventDefault();
     if (
-      customTag &&
-      !selectedTags.includes(customTag) &&
+      trimmedTag &&
+      !selectedTags.includes(trimmedTag) &&
       selectedTags.length < 5
     ) {
-      setSelectedTags([...selectedTags, customTag]);
+      setSelectedTags([...selectedTags, trimmedTag]);
       setCustomTag("");
     }
   };
@@ -307,7 +338,7 @@ const CommunityWrite = () => {
                     <div className="border-2 border-dashed border-brand-gray-200 rounded-lg p-8 text-center">
                       <Upload className="mx-auto h-10 w-10 text-brand-gray-300 mb-3" />
                       <p className="text-brand-gray-500 mb-2">
-                        파일을 드래그하거나 클릭하여 업로드
+                        파일을 클릭하여 업로드
                       </p>
                       <p className="text-sm text-brand-gray-400 mb-4">
                         PDF, DOCX, ZIP 파일 (최대 10MB)
