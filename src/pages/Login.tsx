@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import Layout from "@/components/layout/Layout";
 import { EyeOff, EyeOpen } from "@/assets";
 import { login } from "@/apis/user";
-import { cookie } from "@/lib/Cookie";
 import { AuthContext } from "@/lib/AuthContext";
 
 const Login = () => {
@@ -20,16 +19,10 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await login({ mail: email, password });
+      await login({ mail: email, password });
 
-      const sessionId = response.sessionId || response.token;
-      if (sessionId) {
-        cookie.set("SESSION_ID", sessionId, { path: "/", expires: 1 });
-        isLogin();
-        navigate("/jobs");
-      } else {
-        alert("세션 정보를 받아오지 못했습니다.");
-      }
+      isLogin();
+      navigate("/jobs");
     } catch (error: any) {
       console.error("로그인 실패:", error.response?.data || error.message);
       alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");

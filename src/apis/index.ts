@@ -2,8 +2,12 @@ import axios, { AxiosError, AxiosInstance } from "axios";
 
 const BASEURL = "http://localhost:8880";
 
-export const authInstance = axios.create({
+export const instance: AxiosInstance = axios.create({
   baseURL: BASEURL,
+  timeout: 10000,
+  headers: {
+    Accept: "application/json",
+  },
   withCredentials: true,
 });
 
@@ -19,14 +23,6 @@ const getSessionIdFromCookies = (): string | undefined => {
   }
   return undefined;
 };
-
-export const instance: AxiosInstance = axios.create({
-  baseURL: BASEURL,
-  timeout: 10000,
-  headers: {
-    Accept: "application/json",
-  },
-});
 
 instance.interceptors.request.use(
   (config) => {
