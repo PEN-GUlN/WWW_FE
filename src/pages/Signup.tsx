@@ -1,35 +1,85 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import Layout from "@/components/layout/Layout";
-import { EyeIcon, EyeOffIcon, CheckIcon } from "lucide-react";
+import { EyeOff, EyeOpen } from "@/assets";
+import { AuthContext } from "@/lib/AuthContext";
+import { Interest, SignupRequestType } from "@/apis/user/type";
+import { signup } from "@/apis/user";
+
+const interests: { value: Interest; label: string }[] = [
+  { value: Interest.DEVELOPMENT, label: "개발" },
+  { value: Interest.ELECTRICAL_ELECTRONIC, label: "전기/전자" },
+  { value: Interest.MANUFACTURING, label: "생산/제조" },
+  { value: Interest.CHEMICAL, label: "화학" },
+  { value: Interest.TEXTILE_APPAREL, label: "섬유/의류" },
+  { value: Interest.MECHANICAL_METAL, label: "기계/금속" },
+  { value: Interest.CONSTRUCTION, label: "건설/토목" },
+  { value: Interest.OFFICE, label: "사무/서비스" },
+  { value: Interest.MEDICAL, label: "의료" },
+  { value: Interest.OTHER, label: "기타" },
+];
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [interest, setInterest] = useState("");
+  const [checkPassword, setCheckPassword] = useState("");
+  const [interest, setInterest] = useState<Interest[]>([]);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showCheckPassword, setShowCheckPassword] = useState(false);
+  const { isLogin } = useContext(AuthContext);
+  const [, setErrors] = useState<Record<string, string>>({
+    mail: "",
+    interest: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle signup logic
-    console.log("Signup submitted with:", { email, password, interest });
+  const validation = () => {
+    const newErrors = { mail: "", interest: "" };
+    if (!mail.trim()) newErrors.mail = "이메일을 입력해주세요";
+    if (interest.length === 0) newErrors.interest = "관심분야를 선택해주세요";
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === "");
   };
 
-  const interests = [
-    { value: "development", label: "개발" },
-    { value: "electronics", label: "전기/전자" },
-    { value: "manufacturing", label: "생산/제조" },
-    { value: "construction", label: "건설/토목" },
-    { value: "office", label: "사무/서비스" },
-    { value: "medical", label: "의료" },
-    { value: "other", label: "기타" },
-  ];
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (validation()) {
+      const finalForm: SignupRequestType = {
+        mail,
+        password,
+        interest,
+      };
+
+      try {
+        await signup(finalForm);
+        navigate("/jobs");
+        isLogin();
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "회원가입 중 오류가 발생했습니다";
+        setErrors((prev) => ({
+          ...prev,
+          general: errorMessage,
+        }));
+      }
+    }
+  };
+
+  const handleInterestChange = (value: Interest) => {
+    setInterest((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
+    );
+  };
 
   return (
     <Layout>
@@ -38,23 +88,23 @@ const Signup = () => {
           <div className="text-center">
             <h1 className="text-3xl font-bold tracking-tight">회원가입</h1>
             <p className="mt-2 text-sm text-brand-gray-600">
-              JobConnect 서비스를 이용하기 위해 회원가입을 해주세요
+              서비스를 이용하기 위해 회원가입을 해주세요
             </p>
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4 rounded-md">
               <div className="space-y-2">
-                <Label htmlFor="email">이메일</Label>
+                <Label htmlFor="mail">이메일</Label>
                 <Input
-                  id="email"
-                  name="email"
+                  id="mail"
+                  name="mail"
                   type="email"
                   autoComplete="email"
                   required
                   placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={mail}
+                  onChange={(e) => setMail(e.target.value)}
                   className="h-12"
                 />
               </div>
@@ -78,16 +128,20 @@ const Signup = () => {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-gray-500 hover:text-brand-gray-800 transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOffIcon className="h-5 w-5" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5" />
-                    )}
+                    <img
+                      src={showPassword ? EyeOpen : EyeOff}
+                      alt={showPassword ? "Hide password" : "Show password"}
+                    />
                   </button>
                 </div>
                 <p className="text-xs text-brand-gray-500">
                   8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다
                 </p>
+                {password && checkPassword && password !== checkPassword && (
+                  <p className="text-red-500 text-xs">
+                    비밀번호가 일치하지 않습니다
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -96,40 +150,41 @@ const Signup = () => {
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
+                    type={showCheckPassword ? "text" : "password"}
                     required
                     placeholder="••••••••"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={checkPassword}
+                    onChange={(e) => setCheckPassword(e.target.value)}
                     className="h-12 pr-10"
                   />
                   <button
                     type="button"
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-gray-500 hover:text-brand-gray-800 transition-colors"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    onClick={() => setShowCheckPassword(!showCheckPassword)}
                   >
-                    {showConfirmPassword ? (
-                      <EyeOffIcon className="h-5 w-5" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5" />
-                    )}
+                    <img
+                      src={showCheckPassword ? EyeOpen : EyeOff}
+                      alt={
+                        showCheckPassword ? "Hide password" : "Show password"
+                      }
+                    />
                   </button>
                 </div>
               </div>
 
               <div className="space-y-3">
                 <Label>관심 분야</Label>
-                <RadioGroup
-                  value={interest}
-                  onValueChange={setInterest}
-                  className="grid grid-cols-2 gap-2"
-                >
+                <div className="grid grid-cols-2 gap-4">
                   {interests.map((item) => (
                     <div
                       key={item.value}
                       className="flex items-center space-x-2"
                     >
-                      <RadioGroupItem value={item.value} id={item.value} />
+                      <Checkbox
+                        id={item.value}
+                        checked={interest.includes(item.value)}
+                        onCheckedChange={() => handleInterestChange(item.value)}
+                      />
                       <Label
                         htmlFor={item.value}
                         className="font-normal cursor-pointer"
@@ -138,13 +193,16 @@ const Signup = () => {
                       </Label>
                     </div>
                   ))}
-                </RadioGroup>
+                </div>
               </div>
             </div>
 
             <Button
               type="submit"
               className="w-full bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium h-12"
+              disabled={
+                !mail || !password || !checkPassword || !interest.length
+              }
             >
               회원가입
             </Button>
