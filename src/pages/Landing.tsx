@@ -5,9 +5,9 @@ import Layout from "@/components/layout/Layout";
 import VoteIcon from "@/components/\bicon/VoteIcon";
 import CommentIcon from "@/components/\bicon/CommnetIcon";
 
-const navigate = useNavigate();
-
 const Landing = () => {
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-b from-white to-brand-gray-50">
