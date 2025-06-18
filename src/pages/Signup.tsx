@@ -25,7 +25,7 @@ const interests: { value: Interest; label: string }[] = [
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [mail, setMail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [interest, setInterest] = useState<Interest[]>([]);
@@ -33,13 +33,13 @@ const Signup = () => {
   const [showCheckPassword, setShowCheckPassword] = useState(false);
   const { isLogin } = useContext(AuthContext);
   const [, setErrors] = useState<Record<string, string>>({
-    mail: "",
+    email: "",
     interest: "",
   });
 
   const validation = () => {
-    const newErrors = { mail: "", interest: "" };
-    if (!mail.trim()) newErrors.mail = "이메일을 입력해주세요";
+    const newErrors = { email: "", interest: "" };
+    if (!email.trim()) newErrors.email = "이메일을 입력해주세요";
     if (interest.length === 0) newErrors.interest = "관심분야를 선택해주세요";
 
     setErrors(newErrors);
@@ -51,7 +51,7 @@ const Signup = () => {
 
     if (validation()) {
       const finalForm: SignupRequestType = {
-        mail,
+        email,
         password,
         interest,
       };
@@ -95,16 +95,16 @@ const Signup = () => {
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4 rounded-md">
               <div className="space-y-2">
-                <Label htmlFor="mail">이메일</Label>
+                <Label htmlFor="email">이메일</Label>
                 <Input
-                  id="mail"
-                  name="mail"
+                  id="email"
+                  name="email"
                   type="email"
                   autoComplete="email"
                   required
                   placeholder="name@example.com"
-                  value={mail}
-                  onChange={(e) => setMail(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="h-12"
                 />
               </div>
@@ -201,7 +201,7 @@ const Signup = () => {
               type="submit"
               className="w-full bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium h-12"
               disabled={
-                !mail || !password || !checkPassword || !interest.length
+                !email || !password || !checkPassword || !interest.length
               }
             >
               회원가입
