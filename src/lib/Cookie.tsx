@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
 export const cookie = {
   get: (key: string) => {

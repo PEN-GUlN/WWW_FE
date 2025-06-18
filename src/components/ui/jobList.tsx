@@ -1,6 +1,6 @@
-import React from "react";
-import JobCard from "./jobCard";
-import { JobType } from "@/apis/job/type";
+import React from 'react';
+import JobCard from './jobCard';
+import { JobType } from '@/apis/job/type';
 
 interface JobListProps {
   jobs: JobType[];

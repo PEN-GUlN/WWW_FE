@@ -1,49 +1,49 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import Layout from "@/components/layout/Layout";
-import { EyeOff, EyeOpen } from "@/assets";
-import { AuthContext } from "@/lib/AuthContext";
-import { Interest, SignupRequestType } from "@/apis/user/type";
-import { signup } from "@/apis/user";
+import { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import Layout from '@/components/layout/Layout';
+import { EyeOff, EyeOpen } from '@/assets';
+import { AuthContext } from '@/lib/AuthContext';
+import { Interest, SignupRequestType } from '@/apis/user/type';
+import { signup } from '@/apis/user';
 
 const interests: { value: Interest; label: string }[] = [
-  { value: Interest.DEVELOPMENT, label: "개발" },
-  { value: Interest.ELECTRICAL_ELECTRONIC, label: "전기/전자" },
-  { value: Interest.MANUFACTURING, label: "생산/제조" },
-  { value: Interest.CHEMICAL, label: "화학" },
-  { value: Interest.TEXTILE_APPAREL, label: "섬유/의류" },
-  { value: Interest.MECHANICAL_METAL, label: "기계/금속" },
-  { value: Interest.CONSTRUCTION, label: "건설/토목" },
-  { value: Interest.OFFICE, label: "사무/서비스" },
-  { value: Interest.MEDICAL, label: "의료" },
-  { value: Interest.OTHER, label: "기타" },
+  { value: Interest.DEVELOPMENT, label: '개발' },
+  { value: Interest.ELECTRICAL_ELECTRONIC, label: '전기/전자' },
+  { value: Interest.MANUFACTURING, label: '생산/제조' },
+  { value: Interest.CHEMICAL, label: '화학' },
+  { value: Interest.TEXTILE_APPAREL, label: '섬유/의류' },
+  { value: Interest.MECHANICAL_METAL, label: '기계/금속' },
+  { value: Interest.CONSTRUCTION, label: '건설/토목' },
+  { value: Interest.OFFICE, label: '사무/서비스' },
+  { value: Interest.MEDICAL, label: '의료' },
+  { value: Interest.OTHER, label: '기타' },
 ];
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
   const [interest, setInterest] = useState<Interest[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
   const { isLogin } = useContext(AuthContext);
   const [, setErrors] = useState<Record<string, string>>({
-    email: "",
-    interest: "",
+    email: '',
+    interest: '',
   });
 
   const validation = () => {
-    const newErrors = { email: "", interest: "" };
-    if (!email.trim()) newErrors.email = "이메일을 입력해주세요";
-    if (interest.length === 0) newErrors.interest = "관심분야를 선택해주세요";
+    const newErrors = { email: '', interest: '' };
+    if (!email.trim()) newErrors.email = '이메일을 입력해주세요';
+    if (interest.length === 0) newErrors.interest = '관심분야를 선택해주세요';
 
     setErrors(newErrors);
-    return Object.values(newErrors).every((error) => error === "");
+    return Object.values(newErrors).every((error) => error === '');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,13 +58,11 @@ const Signup = () => {
 
       try {
         await signup(finalForm);
-        navigate("/jobs");
+        navigate('/jobs');
         isLogin();
       } catch (error) {
         const errorMessage =
-          error instanceof Error
-            ? error.message
-            : "회원가입 중 오류가 발생했습니다";
+          error instanceof Error ? error.message : '회원가입 중 오류가 발생했습니다';
         setErrors((prev) => ({
           ...prev,
           general: errorMessage,
@@ -75,9 +73,7 @@ const Signup = () => {
 
   const handleInterestChange = (value: Interest) => {
     setInterest((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value],
     );
   };
 
@@ -115,7 +111,7 @@ const Signup = () => {
                   <Input
                     id="password"
                     name="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     required
                     placeholder="••••••••"
@@ -130,7 +126,7 @@ const Signup = () => {
                   >
                     <img
                       src={showPassword ? EyeOpen : EyeOff}
-                      alt={showPassword ? "Hide password" : "Show password"}
+                      alt={showPassword ? 'Hide password' : 'Show password'}
                     />
                   </button>
                 </div>
@@ -138,9 +134,7 @@ const Signup = () => {
                   8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다
                 </p>
                 {password && checkPassword && password !== checkPassword && (
-                  <p className="text-red-500 text-xs">
-                    비밀번호가 일치하지 않습니다
-                  </p>
+                  <p className="text-red-500 text-xs">비밀번호가 일치하지 않습니다</p>
                 )}
               </div>
 
@@ -150,7 +144,7 @@ const Signup = () => {
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
-                    type={showCheckPassword ? "text" : "password"}
+                    type={showCheckPassword ? 'text' : 'password'}
                     required
                     placeholder="••••••••"
                     value={checkPassword}
@@ -164,9 +158,7 @@ const Signup = () => {
                   >
                     <img
                       src={showCheckPassword ? EyeOpen : EyeOff}
-                      alt={
-                        showCheckPassword ? "Hide password" : "Show password"
-                      }
+                      alt={showCheckPassword ? 'Hide password' : 'Show password'}
                     />
                   </button>
                 </div>
@@ -176,19 +168,13 @@ const Signup = () => {
                 <Label>관심 분야</Label>
                 <div className="grid grid-cols-2 gap-4">
                   {interests.map((item) => (
-                    <div
-                      key={item.value}
-                      className="flex items-center space-x-2"
-                    >
+                    <div key={item.value} className="flex items-center space-x-2">
                       <Checkbox
                         id={item.value}
                         checked={interest.includes(item.value)}
                         onCheckedChange={() => handleInterestChange(item.value)}
                       />
-                      <Label
-                        htmlFor={item.value}
-                        className="font-normal cursor-pointer"
-                      >
+                      <Label htmlFor={item.value} className="font-normal cursor-pointer">
                         {item.label}
                       </Label>
                     </div>
@@ -200,20 +186,15 @@ const Signup = () => {
             <Button
               type="submit"
               className="w-full bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium h-12"
-              disabled={
-                !email || !password || !checkPassword || !interest.length
-              }
+              disabled={!email || !password || !checkPassword || !interest.length}
             >
               회원가입
             </Button>
 
             <div className="text-center text-sm">
               <p className="text-brand-gray-600">
-                이미 계정이 있으신가요?{" "}
-                <Link
-                  to="/login"
-                  className="font-medium text-brand-yellow hover:underline"
-                >
+                이미 계정이 있으신가요?{' '}
+                <Link to="/login" className="font-medium text-brand-yellow hover:underline">
                   로그인
                 </Link>
               </p>

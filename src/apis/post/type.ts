@@ -1,14 +1,16 @@
-import { Type } from "../user/type";
+import { CommentResponse } from '../comment/type';
 
 export interface PostType {
   id: number;
   title: string;
   content: string;
-  type: Type;
+  type: PostTypeEnum;
   created_at: string;
+  tags: string[];
   user: {
-    mail: string;
+    email: string;
   };
+  comments: CommentResponse[];
 }
 export interface PostListType {
   posts: PostType[];
@@ -18,5 +20,11 @@ export interface PostListType {
 export interface PostRequestType {
   title: string;
   content: string;
-  type: Type;
+  type: PostTypeEnum;
+  tags: string[];
+}
+
+export enum PostTypeEnum {
+  EXPERIENCE = '경험',
+  FILE = '자료',
 }

@@ -1,30 +1,39 @@
-
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate';
 
 export default {
-  darkMode: ["class"],
+  darkMode: ['class'],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
-  prefix: "",
+  prefix: '',
   theme: {
     container: {
       center: true,
       padding: '2rem',
       screens: {
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
-        '2xl': '1400px'
-      }
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1400px',
+      },
     },
     extend: {
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'San Francisco',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'sans-serif',
+          'Apple Color Emoji',
+        ],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -34,31 +43,31 @@ export default {
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
+          foreground: 'hsl(var(--destructive-foreground))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
+          foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
+          foreground: 'hsl(var(--accent-foreground))',
         },
         popover: {
           DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
+          foreground: 'hsl(var(--popover-foreground))',
         },
         card: {
           DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
+          foreground: 'hsl(var(--card-foreground))',
         },
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
@@ -68,7 +77,7 @@ export default {
           accent: 'hsl(var(--sidebar-accent))',
           'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
           border: 'hsl(var(--sidebar-border))',
-          ring: 'hsl(var(--sidebar-ring))'
+          ring: 'hsl(var(--sidebar-ring))',
         },
         brand: {
           yellow: '#FFCC00',
@@ -84,50 +93,50 @@ export default {
           'gray-700': '#616161',
           'gray-800': '#424242',
           'gray-900': '#212121',
-        }
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' }
+          to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' }
+          to: { height: '0' },
         },
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' }
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'fade-out': {
           '0%': { opacity: '1', transform: 'translateY(0)' },
-          '100%': { opacity: '0', transform: 'translateY(10px)' }
+          '100%': { opacity: '0', transform: 'translateY(10px)' },
         },
         'scale-in': {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' }
+          '100%': { transform: 'scale(1)', opacity: '1' },
         },
         'scale-out': {
           from: { transform: 'scale(1)', opacity: '1' },
-          to: { transform: 'scale(0.95)', opacity: '0' }
+          to: { transform: 'scale(0.95)', opacity: '0' },
         },
         'slide-in-right': {
           '0%': { transform: 'translateX(100%)' },
-          '100%': { transform: 'translateX(0)' }
+          '100%': { transform: 'translateX(0)' },
         },
         'slide-out-right': {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(100%)' }
+          '100%': { transform: 'translateX(100%)' },
         },
         'pulse-slow': {
           '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.8' }
-        }
+          '50%': { opacity: '0.8' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -138,11 +147,11 @@ export default {
         'scale-out': 'scale-out 0.3s ease-out',
         'slide-in-right': 'slide-in-right 0.4s ease-out',
         'slide-out-right': 'slide-out-right 0.4s ease-out',
-        'enter': 'fade-in 0.4s ease-out, scale-in 0.3s ease-out',
-        'exit': 'fade-out 0.4s ease-out, scale-out 0.3s ease-out',
-        'pulse-slow': 'pulse-slow 2s ease-in-out infinite'
-      }
-    }
+        enter: 'fade-in 0.4s ease-out, scale-in 0.3s ease-out',
+        exit: 'fade-out 0.4s ease-out, scale-out 0.3s ease-out',
+        'pulse-slow': 'pulse-slow 2s ease-in-out infinite',
+      },
+    },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [animate],
 } satisfies Config;

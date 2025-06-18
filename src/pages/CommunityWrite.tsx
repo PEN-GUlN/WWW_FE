@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import Layout from "@/components/layout/Layout";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Form,
   FormControl,
@@ -11,46 +11,39 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import {
-  ArrowLeft,
-  Upload,
-  Tag as TagIcon,
-  X,
-  Plus,
-  FileText,
-} from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { ArrowLeft, Upload, Tag as TagIcon, X, Plus, FileText } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 // 태그 옵션
 const tagCategories = {
   postTypes: [
-    { value: "interview", label: "면접후기" },
-    { value: "portfolio", label: "포트폴리오" },
-    { value: "resume", label: "이력서" },
-    { value: "experience", label: "취업경험" },
-    { value: "tip", label: "취업팁" },
+    { value: 'interview', label: '면접후기' },
+    { value: 'portfolio', label: '포트폴리오' },
+    { value: 'resume', label: '이력서' },
+    { value: 'experience', label: '취업경험' },
+    { value: 'tip', label: '취업팁' },
   ],
   locations: [
-    { value: "usa", label: "미국취업" },
-    { value: "japan", label: "일본취업" },
-    { value: "singapore", label: "싱가포르취업" },
-    { value: "europe", label: "유럽취업" },
+    { value: 'usa', label: '미국취업' },
+    { value: 'japan', label: '일본취업' },
+    { value: 'singapore', label: '싱가포르취업' },
+    { value: 'europe', label: '유럽취업' },
   ],
   industries: [
-    { value: "software", label: "소프트웨어" },
-    { value: "finance", label: "금융" },
-    { value: "manufacturing", label: "제조" },
-    { value: "medical", label: "의료" },
+    { value: 'software', label: '소프트웨어' },
+    { value: 'finance', label: '금융' },
+    { value: 'manufacturing', label: '제조' },
+    { value: 'medical', label: '의료' },
   ],
 };
 
@@ -70,15 +63,15 @@ interface WriteFormValues {
 const CommunityWrite = () => {
   const navigate = useNavigate();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [customTag, setCustomTag] = useState("");
+  const [customTag, setCustomTag] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // React Hook Form 설정
   const form = useForm<WriteFormValues>({
     defaultValues: {
-      title: "",
-      content: "",
-      postType: "experience",
+      title: '',
+      content: '',
+      postType: 'experience',
     },
   });
 
@@ -97,29 +90,25 @@ const CommunityWrite = () => {
 
     // 태그 길이 검증
     if (trimmedTag.length < 2) {
-      toast.error("태그는 최소 2자 이상이어야 합니다.");
+      toast.error('태그는 최소 2자 이상이어야 합니다.');
       return;
     }
 
     if (trimmedTag.length > 20) {
-      toast.error("태그는 20자를 초과할 수 없습니다.");
+      toast.error('태그는 20자를 초과할 수 없습니다.');
       return;
     }
 
     // 특수문자 검증
     const tagRegex = /^[가-힣a-zA-Z0-9\s]+$/;
     if (!tagRegex.test(trimmedTag)) {
-      toast.error("태그는 한글, 영문, 숫자만 사용 가능합니다.");
+      toast.error('태그는 한글, 영문, 숫자만 사용 가능합니다.');
       return;
     }
     e.preventDefault();
-    if (
-      trimmedTag &&
-      !selectedTags.includes(trimmedTag) &&
-      selectedTags.length < 5
-    ) {
+    if (trimmedTag && !selectedTags.includes(trimmedTag) && selectedTags.length < 5) {
       setSelectedTags([...selectedTags, trimmedTag]);
-      setCustomTag("");
+      setCustomTag('');
     }
   };
 
@@ -141,8 +130,8 @@ const CommunityWrite = () => {
       file: selectedFile,
     });
 
-    toast.success("게시글이 성공적으로 등록되었습니다.");
-    navigate("/community");
+    toast.success('게시글이 성공적으로 등록되었습니다.');
+    navigate('/community');
   };
 
   return (
@@ -173,10 +162,7 @@ const CommunityWrite = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>글 종류</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="글 종류를 선택하세요" />
@@ -200,11 +186,7 @@ const CommunityWrite = () => {
                   <FormItem>
                     <FormLabel>제목</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="제목을 입력하세요"
-                        {...field}
-                        className="h-12"
-                      />
+                      <Input placeholder="제목을 입력하세요" {...field} className="h-12" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -253,9 +235,7 @@ const CommunityWrite = () => {
                   ))}
 
                   {selectedTags.length === 0 && (
-                    <div className="text-sm text-brand-gray-500">
-                      태그를 선택하세요
-                    </div>
+                    <div className="text-sm text-brand-gray-500">태그를 선택하세요</div>
                   )}
                 </div>
 
@@ -268,14 +248,11 @@ const CommunityWrite = () => {
                         type="button"
                         className={`py-1.5 px-3 text-sm rounded-full transition-all ${
                           selectedTags.includes(tag.label)
-                            ? "bg-brand-yellow text-black font-medium"
-                            : "bg-brand-gray-100 text-brand-gray-700 hover:bg-brand-gray-200"
+                            ? 'bg-brand-yellow text-black font-medium'
+                            : 'bg-brand-gray-100 text-brand-gray-700 hover:bg-brand-gray-200'
                         }`}
                         onClick={() => handleAddTag(tag.label)}
-                        disabled={
-                          selectedTags.includes(tag.label) ||
-                          selectedTags.length >= 5
-                        }
+                        disabled={selectedTags.includes(tag.label) || selectedTags.length >= 5}
                       >
                         {tag.label}
                       </button>
@@ -308,7 +285,7 @@ const CommunityWrite = () => {
               </div>
 
               {/* 파일 첨부 (리소스 유형일 경우에만) */}
-              {form.watch("postType") === "resource" && (
+              {form.watch('postType') === 'resource' && (
                 <div className="space-y-2">
                   <FormLabel>파일 첨부</FormLabel>
 
@@ -325,21 +302,14 @@ const CommunityWrite = () => {
                           </div>
                         </div>
                       </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={handleRemoveFile}
-                      >
+                      <Button type="button" variant="outline" size="sm" onClick={handleRemoveFile}>
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
                   ) : (
                     <div className="border-2 border-dashed border-brand-gray-200 rounded-lg p-8 text-center">
                       <Upload className="mx-auto h-10 w-10 text-brand-gray-300 mb-3" />
-                      <p className="text-brand-gray-500 mb-2">
-                        파일을 클릭하여 업로드
-                      </p>
+                      <p className="text-brand-gray-500 mb-2">파일을 클릭하여 업로드</p>
                       <p className="text-sm text-brand-gray-400 mb-4">
                         PDF, DOCX, ZIP 파일 (최대 10MB)
                       </p>
@@ -347,9 +317,7 @@ const CommunityWrite = () => {
                         type="button"
                         variant="outline"
                         className="mx-auto"
-                        onClick={() =>
-                          document.getElementById("file-upload")?.click()
-                        }
+                        onClick={() => document.getElementById('file-upload')?.click()}
                       >
                         파일 선택
                       </Button>
@@ -367,11 +335,7 @@ const CommunityWrite = () => {
 
               {/* 제출 버튼 */}
               <div className="flex justify-end gap-3 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => navigate("/community")}
-                >
+                <Button type="button" variant="outline" onClick={() => navigate('/community')}>
                   취소
                 </Button>
                 <Button

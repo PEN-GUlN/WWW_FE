@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import JobList from "@/components/ui/jobList";
-import { getAllJobList } from "@/apis/job";
-import { JobListType } from "@/apis/job/type";
-import Layout from "@/components/layout/Layout";
+import { useQuery } from '@tanstack/react-query';
+import JobList from '@/components/ui/jobList';
+import { getAllJobList } from '@/apis/job';
+import { JobListType } from '@/apis/job/type';
+import Layout from '@/components/layout/Layout';
 
 export default function Jobs() {
   const { data, isLoading, isError } = useQuery<JobListType>({
-    queryKey: ["jobs"],
+    queryKey: ['jobs'],
     queryFn: getAllJobList,
   });
 

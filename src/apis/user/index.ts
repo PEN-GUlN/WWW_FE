@@ -1,8 +1,8 @@
-import { instance } from "..";
-import { LoginRequestType, SignupRequestType } from "./type";
+import { instance } from '..';
+import { LoginRequestType, SignupRequestType } from './type';
 
-const router = "/user";
-const authRouter = "/auth";
+const router = '/user';
+const authRouter = '/auth';
 
 export const signup = async (request: SignupRequestType) => {
   const response = await instance.post(`${authRouter}/signup`, request);

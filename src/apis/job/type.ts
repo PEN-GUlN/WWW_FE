@@ -1,4 +1,4 @@
-import { Interest } from "../user/type";
+import { Interest } from '../user/type';
 
 export interface JobType {
   id: number;

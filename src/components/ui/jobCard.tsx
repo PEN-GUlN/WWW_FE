@@ -1,12 +1,14 @@
-import { Briefcase, MapPin, BarChart, Clock } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { JobType } from "@/apis/job/type";
+import { Briefcase, MapPin, BarChart, Clock } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { JobType } from '@/apis/job/type';
+import { useNavigate } from 'react-router-dom';
 
 interface JobCardProps {
   job: JobType;
 }
 
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
+  const navigate = useNavigate();
   const calculateDaysRemaining = (deadline: string): number => {
     const today = new Date();
     const end = new Date(deadline);
@@ -14,25 +16,28 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   };
 
   const getDeadlineBadgeColor = (days: number) => {
-    if (days < 0) return "bg-gray-300 text-gray-600";
-    if (days === 0) return "bg-red-500 text-white";
-    if (days <= 3) return "bg-orange-400 text-white";
-    return "bg-green-500 text-white";
+    if (days < 0) return 'bg-gray-300 text-gray-600';
+    if (days === 0) return 'bg-red-500 text-white';
+    if (days <= 3) return 'bg-orange-400 text-white';
+    return 'bg-green-500 text-white';
   };
 
   const daysRemaining = calculateDaysRemaining(job.deadline);
   const deadlineBadgeColor = getDeadlineBadgeColor(daysRemaining);
 
+  const handleCardClick = () => {
+    navigate(`/jobs/${job.id}`);
+  };
+
   return (
-    <div className="bg-white rounded-xl border border-brand-gray-200 p-6 hover:shadow-md transition-all hover-lift">
+    <div
+      className="bg-white rounded-xl border border-brand-gray-200 p-6 hover:shadow-md transition-all hover-lift cursor-pointer mx-[30px]"
+      onClick={handleCardClick}
+    >
       <div className="flex items-start gap-4">
         <div className="bg-brand-gray-100 h-12 w-12 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
           {job.nationImgUrl ? (
-            <img
-              src={job.nationImgUrl}
-              alt={job.company}
-              className="w-full h-full object-cover"
-            />
+            <img src={job.nationImgUrl} alt={job.company} className="w-full h-full object-cover" />
           ) : (
             <Briefcase className="h-6 w-6 text-brand-gray-500" />
           )}
@@ -50,8 +55,8 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
               {daysRemaining > 0
                 ? `마감 ${daysRemaining}일 전`
                 : daysRemaining === 0
-                ? "오늘 마감"
-                : "마감됨"}
+                  ? '오늘 마감'
+                  : '마감됨'}
             </Badge>
           </div>
 
@@ -92,7 +97,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 export default JobCard;
 
 const formatSalary = (salary: string) => {
-  const [min, max] = salary.split("~").map((s) => s.trim());
+  const [min, max] = salary.split('~').map((s) => s.trim());
 
   if (min === max) {
     return `${Number(min).toLocaleString()}`;

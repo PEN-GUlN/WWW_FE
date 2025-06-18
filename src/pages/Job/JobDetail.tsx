@@ -329,19 +329,13 @@
 
 // export default JobDetail;
 
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import Layout from "@/components/layout/Layout";
-import {
-  MapPin,
-  Briefcase,
-  GraduationCap,
-  DollarSign,
-  Clock,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { getJobListById } from "@/apis/job";
-import { JobDetailType } from "@/apis/job/type";
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import Layout from '@/components/layout/Layout';
+import { MapPin, Briefcase, GraduationCap, DollarSign, Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { getJobListById } from '@/apis/job';
+import { JobDetailType } from '@/apis/job/type';
 
 const JobDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -351,7 +345,7 @@ const JobDetail = () => {
     isLoading,
     isError,
   } = useQuery<JobDetailType>({
-    queryKey: ["jobDetail", id],
+    queryKey: ['jobDetail', id],
     queryFn: () => getJobListById(Number(id)),
     enabled: !!id,
   });
@@ -412,10 +406,7 @@ const JobDetail = () => {
           </div>
 
           <div className="mb-6">
-            <Button
-              asChild
-              className="bg-brand-yellow text-black font-semibold"
-            >
+            <Button asChild className="bg-brand-yellow text-black font-semibold">
               <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
                 지원하러 가기
               </a>
