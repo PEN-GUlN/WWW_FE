@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import Layout from '@/components/layout/Layout';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
-import DOMPurify from 'dompurify';
+import React, { useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import Layout from "@/components/layout/Layout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "@/components/ui/card";
+import DOMPurify from "dompurify";
 import {
   MessageCircle,
   ArrowLeft,
@@ -15,19 +15,22 @@ import {
   Calendar,
   // Heart,
   // FileText,
-} from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { PostType } from '@/apis/post/type';
+} from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { PostDetailType } from "@/apis/post/type";
+import { getPostById } from "@/apis/post";
+import { Default } from "@/assets";
 
 const CommunityPostDetail = () => {
   const { id } = useParams();
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   // const [liked] = useState(false);
 
-  const { data } = useQuery<PostType>({
-    queryKey: ['post', id],
+  const { data } = useQuery<PostDetailType>({
+    queryKey: ["postDetail", id],
+    queryFn: () => getPostById(Number(id)),
+    enabled: !!id,
   });
-
   const post = data || null;
 
   if (!post) {
@@ -35,7 +38,9 @@ const CommunityPostDetail = () => {
       <Layout>
         <div className="container px-4 md:px-6 py-12">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl font-bold mb-4">게시글을 찾을 수 없습니다</h1>
+            <h1 className="text-3xl font-bold mb-4">
+              게시글을 찾을 수 없습니다
+            </h1>
             <Link to="/community">
               <Button>
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -51,8 +56,8 @@ const CommunityPostDetail = () => {
   const handleSubmitComment = (e: React.FormEvent) => {
     e.preventDefault();
     // 댓글을 백엔드로 전송하는 로직
-    alert('댓글 기능은 현재 준비 중입니다.');
-    setNewComment('');
+    alert("댓글 기능은 현재 준비 중입니다.");
+    setNewComment("");
   };
 
   // const handleDownload = () => {
@@ -64,7 +69,7 @@ const CommunityPostDetail = () => {
 
   // 유저네임을 이메일에서 추출하는 함수
   const getUsername = (email: string) => {
-    return email.split('@')[0];
+    return email.split("@")[0];
   };
 
   return (
@@ -108,11 +113,15 @@ const CommunityPostDetail = () => {
             <div className="flex items-center justify-between border-b border-brand-gray-200 pb-4">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={''} alt={post.user.email} />
-                  <AvatarFallback>{post.user.email.substring(0, 2)}</AvatarFallback>
+                  <AvatarImage src={Default} alt={post.user.email} />
+                  <AvatarFallback>
+                    {post.user.email.substring(0, 2)}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-semibold">{getUsername(post.user.email)}</div>
+                  <div className="font-semibold">
+                    {getUsername(post.user.email)}
+                  </div>
                   <div className="text-sm text-brand-gray-500 flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
                     {new Date(post.created_at).toLocaleDateString()}
@@ -173,7 +182,9 @@ const CommunityPostDetail = () => {
           )} */}
           {/* 댓글 섹션 */}
           <div className="mt-12">
-            <h2 className="text-xl font-bold mb-6">댓글 {post.comments.length}개</h2>
+            <h2 className="text-xl font-bold mb-6">
+              댓글 {post.comments.length}개
+            </h2>
 
             {/* 댓글 작성 폼 */}
             <form onSubmit={handleSubmitComment} className="mb-8">
@@ -203,17 +214,25 @@ const CommunityPostDetail = () => {
                     <CardContent className="p-4">
                       <div className="flex items-start gap-4">
                         <Avatar className="h-8 w-8 mt-1">
-                          <AvatarImage src={''} alt={comment.user.email} />
-                          <AvatarFallback>{comment.user.email.substring(0, 2)}</AvatarFallback>
+                          <AvatarImage src="" alt={comment.user.email} />
+                          <AvatarFallback>
+                            {comment.user.email.substring(0, 2)}
+                          </AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <div className="font-medium">{getUsername(comment.user.email)}</div>
+                            <div className="font-medium">
+                              {getUsername(comment.user.email)}
+                            </div>
                             <div className="text-xs text-brand-gray-500">
-                              {new Date(comment.created_at).toLocaleDateString()}
+                              {new Date(
+                                comment.created_at
+                              ).toLocaleDateString()}
                             </div>
                           </div>
-                          <p className="text-brand-gray-800">{comment.content}</p>
+                          <p className="text-brand-gray-800">
+                            {comment.content}
+                          </p>
                         </div>
                       </div>
                     </CardContent>
