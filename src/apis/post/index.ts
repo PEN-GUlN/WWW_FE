@@ -1,7 +1,18 @@
 import { instance } from "..";
-import { PostDetailType, PostListType, PostType } from "./type";
+import {
+  PostDetailType,
+  PostListType,
+  PostRequestType,
+  PostType,
+  PostTypeEnum,
+} from "./type";
 
 const router = "/post";
+
+export const createPost = async (data: PostRequestType): Promise<PostType> => {
+  const response = await instance.post(`${router}/save`, data);
+  return response.data;
+};
 
 export const getAllPostList = async (): Promise<PostListType> => {
   const response = await instance.get(`${router}/query/all`);
@@ -9,7 +20,7 @@ export const getAllPostList = async (): Promise<PostListType> => {
 };
 
 export const getPostListByType = async (
-  type: PostType
+  type: PostTypeEnum
 ): Promise<PostListType> => {
   const response = await instance.get(`${router}/query/${type}`);
   return response.data;
