@@ -2,16 +2,26 @@ import { Briefcase, MapPin, BarChart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { JobType } from "@/apis/job/type";
 import { useNavigate } from "react-router-dom";
+import Bookmark from "@/assets/Bookmark.svg";
+import Bookmarked from "@/assets/Bookmarked.svg";
+import { useState } from "react";
 
 interface JobCardProps {
   job: JobType;
+  isBookmarked?: boolean;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job }) => {
+const JobCard: React.FC<JobCardProps> = ({ job, isBookmarked = false }) => {
   const navigate = useNavigate();
+  const [bookmarked, setBookmarked] = useState(isBookmarked);
 
   const handleCardClick = () => {
     navigate(`/jobs/${job.id}`);
+  };
+
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setBookmarked((prev) => !prev);
   };
 
   const getDaysAgo = (publishedDate: number) => {
@@ -20,9 +30,23 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 
   return (
     <div
-      className="bg-white rounded-xl border border-brand-gray-200 p-6 hover:shadow-md transition-all hover-lift cursor-pointer mx-[30px]"
+      className="bg-white rounded-xl border border-brand-gray-200 p-6 hover:shadow-md transition-all hover-lift cursor-pointer mx-[30px] relative"
       onClick={handleCardClick}
     >
+      {/* 북마크 아이콘 */}
+      <button
+        className="absolute top-0 right-4 z-10"
+        onClick={handleBookmarkClick}
+        tabIndex={-1}
+        aria-label={bookmarked ? "북마크됨" : "북마크"}
+        style={{ background: "none", border: "none", padding: 0, margin: 0 }}
+      >
+        <img
+          src={bookmarked ? Bookmarked : Bookmark}
+          alt={bookmarked ? "Bookmarked" : "Bookmark"}
+          className="w-7 h-7 m-0 p-0 align-top"
+        />
+      </button>
       <div className="flex items-start gap-4">
         {/* 회사 로고 or 기본 아이콘 */}
         <div className="bg-brand-gray-100 h-12 w-12 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">

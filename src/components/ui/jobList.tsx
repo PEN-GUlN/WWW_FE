@@ -37,7 +37,7 @@ const COUNTRY_KR_LABELS: Record<string, string> = {
 
 const sortedCountryCodes = Object.keys(COUNTRY_KR_LABELS).sort(); // 영어 기준 오름차순
 
-const JobList: React.FC<JobListProps> = ({ jobs, jobCnt }) => {
+const JobList: React.FC<JobListProps> = ({ jobs }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("전체");
 
