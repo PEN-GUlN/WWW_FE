@@ -12,7 +12,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       <main className="flex-grow pt-16">{children}</main>
       {/* <main className="flex-grow pt-16 px-[100px]">{children}</main> */}
-
       <Footer />
     </div>
   );
