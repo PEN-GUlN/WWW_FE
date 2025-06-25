@@ -1,4 +1,4 @@
-import { CommentResponse } from "../comment/type";
+import { CommentResponseType } from "../comment/type";
 
 export interface PostDetailType {
   id: number;
@@ -10,7 +10,7 @@ export interface PostDetailType {
   user: {
     email: string;
   };
-  comments: CommentResponse[];
+  comments: CommentResponseType[];
 }
 
 export interface PostType {

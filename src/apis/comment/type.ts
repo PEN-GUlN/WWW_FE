@@ -1,4 +1,4 @@
-export interface CommentResponse {
+export interface CommentResponseType {
   id: number;
   content: string;
   created_at: Date;
@@ -7,12 +7,12 @@ export interface CommentResponse {
   };
 }
 
-export interface CommentRequest {
+export interface CommentRequestType {
   content: string;
   postId: number;
 }
 
-// export interface CommentResponse {
-//   comments: CommentResponse[];
-//   commentCnt: number;
-// }
+export interface CommentListResponse {
+  comments: CommentResponseType[];
+  commentCnt: number;
+}

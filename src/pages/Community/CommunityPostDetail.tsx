@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
 import DOMPurify from "dompurify";
 import {
   MessageCircle,
@@ -16,14 +15,19 @@ import {
   // Heart,
   // FileText,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostDetailType } from "@/apis/post/type";
 import { getPostById } from "@/apis/post";
+import { createComment } from "@/apis/comment";
 import { Default } from "@/assets";
+import CommentList from "@/components/ui/commentList";
+import { useToast } from "@/hooks/use-toast";
 
 const CommunityPostDetail = () => {
   const { id } = useParams();
   const [newComment, setNewComment] = useState("");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
   // const [liked] = useState(false);
 
   const { data } = useQuery<PostDetailType>({
@@ -32,6 +36,30 @@ const CommunityPostDetail = () => {
     enabled: !!id,
   });
   const post = data || null;
+  console.log("게시글 데이터:", post);
+
+  // 댓글 작성 mutation
+  const createCommentMutation = useMutation({
+    mutationFn: (content: string) =>
+      createComment({ content, postId: Number(id) }),
+    onSuccess: () => {
+      toast({
+        title: "댓글이 작성되었습니다.",
+        description: "댓글이 성공적으로 등록되었습니다.",
+      });
+      setNewComment("");
+      // 게시글 상세 데이터 새로고침 (댓글 포함)
+      queryClient.invalidateQueries({ queryKey: ["postDetail", id] });
+    },
+    onError: (error) => {
+      toast({
+        title: "댓글 작성 실패",
+        description: "댓글 작성 중 오류가 발생했습니다.",
+        variant: "destructive",
+      });
+      console.error("댓글 작성 실패:", error);
+    },
+  });
 
   if (!post) {
     return (
@@ -55,9 +83,16 @@ const CommunityPostDetail = () => {
 
   const handleSubmitComment = (e: React.FormEvent) => {
     e.preventDefault();
-    // 댓글을 백엔드로 전송하는 로직
-    alert("댓글 기능은 현재 준비 중입니다.");
-    setNewComment("");
+    if (!newComment.trim()) {
+      toast({
+        title: "댓글 내용을 입력해주세요",
+        description: "댓글 내용은 비워둘 수 없습니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    createCommentMutation.mutate(newComment);
   };
 
   // const handleDownload = () => {
@@ -185,7 +220,6 @@ const CommunityPostDetail = () => {
             <h2 className="text-xl font-bold mb-6">
               댓글 {post.comments.length}개
             </h2>
-
             {/* 댓글 작성 폼 */}
             <form onSubmit={handleSubmitComment} className="mb-8">
               <Textarea
@@ -199,52 +233,15 @@ const CommunityPostDetail = () => {
                 <Button
                   type="submit"
                   className="bg-brand-yellow hover:bg-brand-yellow-dark text-black"
+                  disabled={createCommentMutation.isPending}
                 >
                   <Send className="h-4 w-4 mr-2" />
-                  댓글 작성
+                  {createCommentMutation.isPending ? "작성 중..." : "댓글 작성"}
                 </Button>
               </div>
             </form>
-
             {/* 댓글 목록 */}
-            {post.comments.length > 0 ? (
-              <div className="space-y-6">
-                {post.comments.map((comment) => (
-                  <Card key={comment.id} className="border-brand-gray-200">
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-4">
-                        <Avatar className="h-8 w-8 mt-1">
-                          <AvatarImage src="" alt={comment.user.email} />
-                          <AvatarFallback>
-                            {comment.user.email.substring(0, 2)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="font-medium">
-                              {getUsername(comment.user.email)}
-                            </div>
-                            <div className="text-xs text-brand-gray-500">
-                              {new Date(
-                                comment.created_at
-                              ).toLocaleDateString()}
-                            </div>
-                          </div>
-                          <p className="text-brand-gray-800">
-                            {comment.content}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 border border-dashed border-brand-gray-200 rounded-lg">
-                <MessageCircle className="mx-auto h-10 w-10 text-brand-gray-300 mb-3" />
-                <p className="text-brand-gray-500">아직 댓글이 없습니다</p>
-              </div>
-            )}
+            <CommentList comments={post.comments} />
           </div>
         </div>
       </div>
