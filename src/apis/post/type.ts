@@ -23,6 +23,7 @@ export interface PostType {
   user: {
     email: string;
   };
+  commentCnt: number;
 }
 
 export interface PostListType {

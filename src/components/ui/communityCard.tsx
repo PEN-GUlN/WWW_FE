@@ -4,20 +4,31 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { PostType } from "@/apis/post/type";
 import { Default } from "@/assets";
+import { MessageCircle } from "lucide-react";
 
 interface CommunityCardProps {
   post: PostType;
+  commentCount: number;
 }
 
-const CommunityCard: React.FC<CommunityCardProps> = ({ post }) => {
+const CommunityCard: React.FC<CommunityCardProps> = ({
+  post,
+  commentCount,
+}) => {
   const navigate = useNavigate();
   const getUsername = (email: string) => email.split("@")[0];
 
   return (
     <div
       onClick={() => navigate(`/community/${post.id}`)}
-      className="cursor-pointer block bg-white border border-brand-gray-200 rounded-xl p-6 hover:shadow-md transition-all hover-lift"
+      className="cursor-pointer block bg-white border border-brand-gray-200 rounded-xl p-6 hover:shadow-md transition-all hover-lift relative"
     >
+      {/* 댓글 수 표시 - 우측 상단 */}
+      <div className="absolute top-4 right-4 flex items-center gap-1 text-brand-gray-500 text-sm">
+        <MessageCircle className="h-4 w-4" />
+        <span>{commentCount}</span>
+      </div>
+
       {/* 태그 목록 */}
       <div className="flex gap-2 mb-3">
         {post.tags.map((tag, index) => (

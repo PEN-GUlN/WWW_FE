@@ -97,7 +97,11 @@ const CommunityList = () => {
       ) : (
         <ul className="space-y-4">
           {filteredPosts.map((post) => (
-            <CommunityCard key={post.id} post={post} />
+            <CommunityCard
+              key={post.id}
+              post={post}
+              commentCount={post.commentCnt}
+            />
           ))}
         </ul>
       )}
