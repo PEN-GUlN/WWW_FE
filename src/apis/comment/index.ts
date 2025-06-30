@@ -1,11 +1,11 @@
-import { instance } from "..";
+import { instance } from '..';
 import {
   CommentRequestType,
   CommentResponseType,
   CommentListResponse,
-} from "./type";
+} from './type';
 
-const router = "/comment";
+const router = '/comment';
 
 export const createComment = async (
   data: CommentRequestType

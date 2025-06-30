@@ -1,13 +1,13 @@
-import { instance } from "..";
+import { instance } from '..';
 import {
   PostDetailType,
   PostListType,
   PostRequestType,
   PostType,
   PostTypeEnum,
-} from "./type";
+} from './type';
 
-const router = "/post";
+const router = '/post';
 
 export const createPost = async (data: PostRequestType): Promise<PostType> => {
   const response = await instance.post(`${router}/save`, data);

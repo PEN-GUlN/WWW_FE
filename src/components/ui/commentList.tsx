@@ -1,12 +1,12 @@
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { CommentResponseType } from "@/apis/comment/type";
-import { Default } from "@/assets";
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { CommentResponseType } from '@/apis/comment/type';
+import { Default } from '@/assets';
 
 interface CommentListProps {
   comments: CommentResponseType[];
 }
 
-const getUsername = (email: string) => email.split("@")[0];
+const getUsername = (email: string) => email.split('@')[0];
 
 const CommentList = ({ comments }: CommentListProps) => {
   if (comments.length === 0) {

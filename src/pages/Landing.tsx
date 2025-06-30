@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Briefcase, Users } from "lucide-react";
-import Layout from "@/components/layout/Layout";
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Briefcase, Users } from 'lucide-react';
+import Layout from '@/components/layout/Layout';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Landing = () => {
                 variant="outline"
                 className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
                 size="lg"
-                onClick={() => navigate("/login")}
+                onClick={() => navigate('/login')}
               >
                 로그인하기
               </Button>
@@ -38,7 +38,7 @@ const Landing = () => {
                 variant="outline"
                 className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
                 size="lg"
-                onClick={() => navigate("/signup")}
+                onClick={() => navigate('/signup')}
               >
                 회원가입하기
               </Button>

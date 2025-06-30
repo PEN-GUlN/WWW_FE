@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import Layout from "@/components/layout/Layout";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Form,
   FormControl,
@@ -11,15 +11,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import {
   ArrowLeft,
   Upload,
@@ -27,17 +27,17 @@ import {
   X,
   Plus,
   FileText,
-} from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import {
   IndustryTagEnum,
   LocationTagEnum,
   PostRequestType,
   PostTagEnum,
   PostTypeEnum,
-} from "@/apis/post/type";
-import { createPost } from "@/apis/post";
+} from '@/apis/post/type';
+import { createPost } from '@/apis/post';
 
 // 태그 카테고리 & 옵션
 const tagCategories = {
@@ -66,14 +66,14 @@ const CommunityWrite = () => {
 
   // 상태
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [customTag, setCustomTag] = useState("");
+  const [customTag, setCustomTag] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // react-hook-form 세팅
   const form = useForm<PostRequestType>({
     defaultValues: {
-      title: "",
-      content: "",
+      title: '',
+      content: '',
       type: PostTypeEnum.EXPERIENCE,
       tags: [],
     },
@@ -97,18 +97,18 @@ const CommunityWrite = () => {
     const trimmedTag = customTag.trim();
 
     if (trimmedTag.length < 2 || trimmedTag.length > 20) {
-      toast.error("태그는 2자 이상 20자 이하로 입력해주세요.");
+      toast.error('태그는 2자 이상 20자 이하로 입력해주세요.');
       return;
     }
 
     if (!/^[가-힣a-zA-Z0-9\s]+$/.test(trimmedTag)) {
-      toast.error("태그는 한글, 영문, 숫자만 사용 가능합니다.");
+      toast.error('태그는 한글, 영문, 숫자만 사용 가능합니다.');
       return;
     }
 
     if (!selectedTags.includes(trimmedTag) && selectedTags.length < 5) {
       setSelectedTags([...selectedTags, trimmedTag]);
-      setCustomTag("");
+      setCustomTag('');
     }
   };
 
@@ -131,11 +131,13 @@ const CommunityWrite = () => {
         ...data,
         tags: selectedTags,
       });
-      toast.success("게시글이 성공적으로 등록되었습니다.");
-      navigate("/community");
-    } catch (error: any) {
+      toast.success('게시글이 성공적으로 등록되었습니다.');
+      navigate('/community');
+    } catch (error: unknown) {
       toast.error(
-        error.response?.data.message || "게시글 등록 중 오류가 발생했습니다."
+        error instanceof Error
+          ? error.message
+          : '게시글 등록 중 오류가 발생했습니다.'
       );
     }
   };
@@ -258,8 +260,8 @@ const CommunityWrite = () => {
                       type="button"
                       className={`py-1.5 px-3 text-sm rounded-full transition-all ${
                         selectedTags.includes(tag.label)
-                          ? "bg-brand-yellow text-black font-medium"
-                          : "bg-brand-gray-100 text-brand-gray-700 hover:bg-brand-gray-200"
+                          ? 'bg-brand-yellow text-black font-medium'
+                          : 'bg-brand-gray-100 text-brand-gray-700 hover:bg-brand-gray-200'
                       }`}
                       onClick={() => handleAddTag(tag.label)}
                       disabled={
@@ -296,7 +298,7 @@ const CommunityWrite = () => {
             </div>
 
             {/* 파일 업로드 (글 종류가 자료일 때만) */}
-            {form.watch("type") === PostTypeEnum.FILE && (
+            {form.watch('type') === PostTypeEnum.FILE && (
               <div className="space-y-2">
                 <FormLabel>파일 첨부</FormLabel>
                 {selectedFile ? (
@@ -335,7 +337,7 @@ const CommunityWrite = () => {
                       variant="outline"
                       className="mx-auto"
                       onClick={() =>
-                        document.getElementById("file-upload")?.click()
+                        document.getElementById('file-upload')?.click()
                       }
                     >
                       파일 선택
@@ -357,7 +359,7 @@ const CommunityWrite = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate("/community")}
+                onClick={() => navigate('/community')}
               >
                 취소
               </Button>

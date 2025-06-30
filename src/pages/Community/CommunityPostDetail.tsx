@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import Layout from "@/components/layout/Layout";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import DOMPurify from "dompurify";
+import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import DOMPurify from 'dompurify';
 import {
   MessageCircle,
   ArrowLeft,
@@ -14,29 +14,29 @@ import {
   Calendar,
   // Heart,
   // FileText,
-} from "lucide-react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { PostDetailType } from "@/apis/post/type";
-import { getPostById } from "@/apis/post";
-import { createComment } from "@/apis/comment";
-import { Default } from "@/assets";
-import CommentList from "@/components/ui/commentList";
-import { useToast } from "@/hooks/use-toast";
+} from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { PostDetailType } from '@/apis/post/type';
+import { getPostById } from '@/apis/post';
+import { createComment } from '@/apis/comment';
+import { Default } from '@/assets';
+import CommentList from '@/components/ui/commentList';
+import { useToast } from '@/hooks/use-toast';
 
 const CommunityPostDetail = () => {
   const { id } = useParams();
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState('');
   const { toast } = useToast();
   const queryClient = useQueryClient();
   // const [liked] = useState(false);
 
   const { data } = useQuery<PostDetailType>({
-    queryKey: ["postDetail", id],
+    queryKey: ['postDetail', id],
     queryFn: () => getPostById(Number(id)),
     enabled: !!id,
   });
   const post = data || null;
-  console.log("게시글 데이터:", post);
+  console.log('게시글 데이터:', post);
 
   // 댓글 작성 mutation
   const createCommentMutation = useMutation({
@@ -44,20 +44,20 @@ const CommunityPostDetail = () => {
       createComment({ content, postId: Number(id) }),
     onSuccess: () => {
       toast({
-        title: "댓글이 작성되었습니다.",
-        description: "댓글이 성공적으로 등록되었습니다.",
+        title: '댓글이 작성되었습니다.',
+        description: '댓글이 성공적으로 등록되었습니다.',
       });
-      setNewComment("");
+      setNewComment('');
       // 게시글 상세 데이터 새로고침 (댓글 포함)
-      queryClient.invalidateQueries({ queryKey: ["postDetail", id] });
+      queryClient.invalidateQueries({ queryKey: ['postDetail', id] });
     },
     onError: (error) => {
       toast({
-        title: "댓글 작성 실패",
-        description: "댓글 작성 중 오류가 발생했습니다.",
-        variant: "destructive",
+        title: '댓글 작성 실패',
+        description: '댓글 작성 중 오류가 발생했습니다.',
+        variant: 'destructive',
       });
-      console.error("댓글 작성 실패:", error);
+      console.error('댓글 작성 실패:', error);
     },
   });
 
@@ -85,9 +85,9 @@ const CommunityPostDetail = () => {
     e.preventDefault();
     if (!newComment.trim()) {
       toast({
-        title: "댓글 내용을 입력해주세요",
-        description: "댓글 내용은 비워둘 수 없습니다.",
-        variant: "destructive",
+        title: '댓글 내용을 입력해주세요',
+        description: '댓글 내용은 비워둘 수 없습니다.',
+        variant: 'destructive',
       });
       return;
     }
@@ -104,7 +104,7 @@ const CommunityPostDetail = () => {
 
   // 유저네임을 이메일에서 추출하는 함수
   const getUsername = (email: string) => {
-    return email.split("@")[0];
+    return email.split('@')[0];
   };
 
   return (
@@ -236,7 +236,7 @@ const CommunityPostDetail = () => {
                   disabled={createCommentMutation.isPending}
                 >
                   <Send className="h-4 w-4 mr-2" />
-                  {createCommentMutation.isPending ? "작성 중..." : "댓글 작성"}
+                  {createCommentMutation.isPending ? '작성 중...' : '댓글 작성'}
                 </Button>
               </div>
             </form>

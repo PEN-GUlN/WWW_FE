@@ -1,12 +1,13 @@
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { getJobListById } from "@/apis/job";
-import { JobDetailType } from "@/apis/job/type";
-import Layout from "@/components/layout/Layout";
-import { useState } from "react";
-import Bookmark from "@/assets/Bookmark.svg";
-import Bookmarked from "@/assets/Bookmarked.svg";
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
+import { getJobListById } from '@/apis/job';
+import { JobDetailType } from '@/apis/job/type';
+import Layout from '@/components/layout/Layout';
+import { useState } from 'react';
+import Bookmark from '@/assets/Bookmark.svg';
+import Bookmarked from '@/assets/Bookmarked.svg';
 
 const JobDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ const JobDetail = () => {
     isLoading,
     isError,
   } = useQuery<JobDetailType>({
-    queryKey: ["jobDetail", id],
+    queryKey: ['jobDetail', id],
     queryFn: () => getJobListById(Number(id)),
     enabled: !!id,
   });
@@ -62,10 +63,10 @@ const JobDetail = () => {
                 <button
                   onClick={handleBookmarkClick}
                   tabIndex={-1}
-                  aria-label={bookmarked ? "북마크됨" : "북마크"}
+                  aria-label={bookmarked ? '북마크됨' : '북마크'}
                   style={{
-                    background: "none",
-                    border: "none",
+                    background: 'none',
+                    border: 'none',
                     padding: 0,
                     margin: 0,
                   }}
@@ -73,7 +74,7 @@ const JobDetail = () => {
                 >
                   <img
                     src={bookmarked ? Bookmarked : Bookmark}
-                    alt={bookmarked ? "Bookmarked" : "Bookmark"}
+                    alt={bookmarked ? 'Bookmarked' : 'Bookmark'}
                     className="w-7 h-7 m-0 p-0 align-top"
                   />
                 </button>
@@ -93,7 +94,7 @@ const JobDetail = () => {
             <span>{job.company}</span>
             {job.companyWebsite && (
               <>
-                {" | "}
+                {' | '}
                 <a
                   href={job.companyWebsite}
                   className="text-brand-blue underline"
@@ -109,10 +110,10 @@ const JobDetail = () => {
           {/* 주요 정보 */}
           <div className="grid md:grid-cols-2 gap-4 text-sm mb-6">
             <InfoRow label="경력">{job.experienceLevel}</InfoRow>
-            <InfoRow label="직무">{job.employmentType || "정보 없음"}</InfoRow>
-            <InfoRow label="근무지">{job.location || "정보 없음"}</InfoRow>
+            <InfoRow label="직무">{job.employmentType || '정보 없음'}</InfoRow>
+            <InfoRow label="근무지">{job.location || '정보 없음'}</InfoRow>
             <InfoRow label="재택 근무">
-              {job.hasRemote ? "가능" : "불가"}
+              {job.hasRemote ? '가능' : '불가'}
             </InfoRow>
             <InfoRow label="국가">
               {job.countryName} ({job.countryCode})
@@ -120,10 +121,10 @@ const JobDetail = () => {
             {job.stateName && <InfoRow label="주">{job.stateName}</InfoRow>}
             {job.cityName && <InfoRow label="도시">{job.cityName}</InfoRow>}
             {job.regionName && <InfoRow label="지역">{job.regionName}</InfoRow>}
-            <InfoRow label="언어">{job.language || "명시되지 않음"}</InfoRow>
+            <InfoRow label="언어">{job.language || '명시되지 않음'}</InfoRow>
             <InfoRow label="공고 게시일">{job.publishedDate}</InfoRow>
             <InfoRow label="에이전시 여부">
-              {job.isAgency ? "에이전시" : "직접 고용"}
+              {job.isAgency ? '에이전시' : '직접 고용'}
             </InfoRow>
           </div>
 
@@ -176,7 +177,7 @@ const JobDetail = () => {
               className="bg-brand-yellow text-black font-semibold px-6 py-2 text-sm"
             >
               <a
-                href={job.applicationUrl || "#"}
+                href={job.applicationUrl || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
               >

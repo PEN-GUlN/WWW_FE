@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import JobCard from "./jobCard";
-import { JobType } from "@/apis/job/type";
+import React, { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
+import JobCard from './jobCard';
+import { JobType } from '@/apis/job/type';
 
 interface JobListProps {
   jobs: JobType[];
@@ -10,43 +10,54 @@ interface JobListProps {
 }
 
 const COUNTRY_KR_LABELS: Record<string, string> = {
-  AR: "아르헨티나",
-  AU: "호주",
-  BR: "브라질",
-  CA: "캐나다",
-  CN: "중국",
-  DE: "독일",
-  DK: "덴마크",
-  ES: "스페인",
-  FI: "핀란드",
-  FR: "프랑스",
-  GB: "영국",
-  IN: "인도",
-  IT: "이탈리아",
-  JP: "일본",
-  KR: "한국",
-  MX: "멕시코",
-  NL: "네덜란드",
-  NO: "노르웨이",
-  PL: "폴란드",
-  RU: "러시아",
-  SE: "스웨덴",
-  US: "미국",
-  ZA: "남아프리카 공화국",
+  AR: '아르헨티나',
+  AU: '호주',
+  BR: '브라질',
+  CA: '캐나다',
+  CN: '중국',
+  DE: '독일',
+  DK: '덴마크',
+  ES: '스페인',
+  FI: '핀란드',
+  FR: '프랑스',
+  GB: '영국',
+  IN: '인도',
+  IT: '이탈리아',
+  JP: '일본',
+  KR: '한국',
+  MX: '멕시코',
+  NL: '네덜란드',
+  NO: '노르웨이',
+  PL: '폴란드',
+  RU: '러시아',
+  SE: '스웨덴',
+  US: '미국',
+  ZA: '남아프리카 공화국',
 };
 
 const sortedCountryCodes = Object.keys(COUNTRY_KR_LABELS).sort(); // 영어 기준 오름차순
 
-const JobList: React.FC<JobListProps> = ({ jobs }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("전체");
+const JobList: React.FC<JobListProps> = ({ jobs: initialJobs }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState('전체');
+  const [jobs, setJobs] = useState<JobType[]>(initialJobs);
+
+  const handleBookmarkToggle = (jobId: number, newStatus: boolean) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        String(job.id) === String(jobId)
+          ? { ...job, isBookmarked: newStatus }
+          : job
+      )
+    );
+  };
 
   const filteredJobs = jobs.filter((job) => {
     const matchesSearch =
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       job.company.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCountry =
-      selectedCountry === "전체" || job.location.includes(selectedCountry);
+      selectedCountry === '전체' || job.location.includes(selectedCountry);
     return matchesSearch && matchesCountry;
   });
 
@@ -76,12 +87,12 @@ const JobList: React.FC<JobListProps> = ({ jobs }) => {
         <div className="mb-2 font-semibold text-sm text-gray-700">국가</div>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
           <button
-            onClick={() => setSelectedCountry("전체")}
+            onClick={() => setSelectedCountry('전체')}
             className={`text-sm px-3 py-2 rounded-full transition border 
               ${
-                selectedCountry === "전체"
-                  ? "bg-brand-yellow text-black border-transparent font-semibold"
-                  : "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
+                selectedCountry === '전체'
+                  ? 'bg-brand-yellow text-black border-transparent font-semibold'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200'
               }`}
           >
             전체
@@ -94,8 +105,8 @@ const JobList: React.FC<JobListProps> = ({ jobs }) => {
               className={`text-sm px-3 py-2 rounded-full transition border 
                 ${
                   selectedCountry === code
-                    ? "bg-brand-yellow text-black border-transparent font-semibold"
-                    : "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
+                    ? 'bg-brand-yellow text-black border-transparent font-semibold'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200'
                 }`}
             >
               {COUNTRY_KR_LABELS[code]}
@@ -116,7 +127,12 @@ const JobList: React.FC<JobListProps> = ({ jobs }) => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
+              <JobCard
+                key={job.id}
+                job={job}
+                isBookmarked={job.isBookmarked}
+                onBookmarkToggle={handleBookmarkToggle}
+              />
             ))}
           </div>
         )}

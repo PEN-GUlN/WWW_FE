@@ -1,10 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { PostType } from "@/apis/post/type";
-import { Default } from "@/assets";
-import { MessageCircle } from "lucide-react";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { PostType } from '@/apis/post/type';
+import { Default } from '@/assets';
+import { MessageCircle } from 'lucide-react';
 
 interface CommunityCardProps {
   post: PostType;
@@ -16,7 +16,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   commentCount,
 }) => {
   const navigate = useNavigate();
-  const getUsername = (email: string) => email.split("@")[0];
+  const getUsername = (email: string) => email.split('@')[0];
 
   return (
     <div

@@ -1,15 +1,14 @@
-import Layout from "@/components/layout/Layout";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { JobType } from "@/apis/job/type";
-import JobCard from "@/components/ui/jobCard";
-import CommunityCard from "@/components/ui/communityCard";
-import { Default } from "@/assets";
-import { myPageType } from "@/apis/user/type";
-import { getMyPage } from "@/apis/user";
-import { getAllCommentByPost } from "@/apis/comment";
-import { PostType } from "@/apis/post/type";
-import { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Layout from '@/components/layout/Layout';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import JobCard from '@/components/ui/jobCard';
+import CommunityCard from '@/components/ui/communityCard';
+import { Default } from '@/assets';
+import { myPageType } from '@/apis/user/type';
+import { getMyPage } from '@/apis/user';
+import { getAllCommentByPost } from '@/apis/comment';
+import { PostType } from '@/apis/post/type';
+import { useEffect, useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface PostWithCommentCount extends PostType {
   commentCount: number;
@@ -50,7 +49,7 @@ const MyPage = () => {
 
       setPostsWithCommentCount(postsWithComments);
     } catch (error) {
-      console.error("마이페이지 불러오기 실패", error);
+      console.error('마이페이지 불러오기 실패', error);
     } finally {
       setLoading(false);
     }
