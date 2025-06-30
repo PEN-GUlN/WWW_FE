@@ -1,28 +1,69 @@
 import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import reactPlugin from "eslint-plugin-react";
 
-export default tseslint.config(
-  { ignores: ["dist"] },
+export default [
+  js.configs.recommended,
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      parser: tsParser,
+      parserOptions: {
+        project: "./tsconfig.eslint.json",
+        ecmaVersion: 2020,
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
+      },
+      globals: {
+        window: "readonly",
+        document: "readonly",
+        console: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        requestAnimationFrame: "readonly",
+        cancelAnimationFrame: "readonly",
+        navigator: "readonly",
+        location: "readonly",
+        fetch: "readonly",
+        FormData: "readonly",
+        Blob: "readonly",
+        URL: "readonly",
+        alert: "readonly",
+        MutationObserver: "readonly",
+        IntersectionObserver: "readonly",
+        ResizeObserver: "readonly",
+        Node: "readonly",
+        Element: "readonly",
+        HTMLElement: "readonly",
+        ShadowRoot: "readonly",
+        CustomEvent: "readonly",
+        AbortController: "readonly",
+        WorkerGlobalScope: "readonly",
+        self: "readonly",
+      },
     },
     plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
+      "@typescript-eslint": tseslint,
+      react: reactPlugin,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
+      ...tseslint.configs.recommended.rules,
+      ...reactPlugin.configs.recommended.rules,
+      quotes: [
+        "error",
+        "single",
+        { avoidEscape: true, allowTemplateLiterals: true },
       ],
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
     },
-  }
-);
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
+];

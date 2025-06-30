@@ -1,31 +1,50 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Layout from "@/components/layout/Layout";
-import { EyeOff, EyeOpen } from "@/assets";
-import { login } from "@/apis/user";
-import { AuthContext } from "@/lib/AuthContext";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import Layout from '@/components/layout/Layout';
+import { EyeOff, EyeOpen } from '@/assets';
+import { login } from '@/apis/user';
+import { AuthContext } from '@/lib/AuthContext';
+import { LoginRequestType } from '@/apis/user/type';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [, setErrors] = useState<Record<string, string>>({
+    email: '',
+    password: '',
+  });
   const { isLogin } = React.useContext(AuthContext);
   const navigate = useNavigate();
+
+  const validation = () => {
+    const newErrors = { email: '', password: '' };
+    if (!email.trim()) newErrors.email = '이메일을 입력해주세요';
+    if (!password.trim()) newErrors.password = '비밀번호를 입력해주세요';
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === '');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      await login({ mail: email, password });
-
-      isLogin();
-      navigate("/jobs");
-    } catch (error: any) {
-      console.error("로그인 실패:", error.response?.data || error.message);
-      alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
+    if (validation()) {
+      const form: LoginRequestType = { email, password };
+      await login(form)
+        .then(() => {
+          navigate('/jobs');
+          isLogin();
+        })
+        .catch((error) => {
+          setErrors((prev) => ({
+            ...prev,
+            email: error.response?.data.message || '로그인 중 오류가 발생했습니다',
+          }));
+        });
     }
   };
 
@@ -65,7 +84,7 @@ const Login = () => {
                   <Input
                     id="password"
                     name="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
                     required
                     placeholder="••••••••"
@@ -80,7 +99,7 @@ const Login = () => {
                   >
                     <img
                       src={showPassword ? EyeOpen : EyeOff}
-                      alt={showPassword ? "Hide password" : "Show password"}
+                      alt={showPassword ? 'Hide password' : 'Show password'}
                     />
                   </button>
                 </div>
@@ -97,11 +116,8 @@ const Login = () => {
 
             <div className="text-center text-sm">
               <p className="text-brand-gray-600">
-                아직 계정이 없으신가요?{" "}
-                <Link
-                  to="/signup"
-                  className="font-medium text-brand-yellow hover:underline"
-                >
+                아직 계정이 없으신가요?{' '}
+                <Link to="/signup" className="font-medium text-brand-yellow hover:underline">
                   회원가입
                 </Link>
               </p>

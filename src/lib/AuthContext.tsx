@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
-import { cookie } from "./Cookie";
+import React, { createContext, useState, useEffect } from 'react';
+import { cookie } from './Cookie';
 
 type AuthContextType = {
   isLoggedIn: boolean;
@@ -25,7 +25,9 @@ export const AuthProvider = ({ children }: AuthChildrenType) => {
   }, []);
 
   const checkSession = () => {
-    const session = cookie.get("SESSION_ID");
+    const session = cookie.get('connect.sid');
+    console.log('Session ID:', session);
+
     setIsLoggedIn(!!session);
   };
 
@@ -33,8 +35,13 @@ export const AuthProvider = ({ children }: AuthChildrenType) => {
     checkSession();
   };
 
-  const logout = () => {
-    cookie.remove("SESSION_ID");
+  const logout = async () => {
+    try {
+      await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
+    } catch {
+      // ignore
+    }
+    cookie.remove('connect.sid');
     setIsLoggedIn(false);
   };
 

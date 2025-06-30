@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
 export const cookie = {
   get: (key: string) => {
@@ -9,7 +9,7 @@ export const cookie = {
     Cookies.set(key, value, options);
   },
 
-  remove: (key: string) => {
-    Cookies.remove(key);
+  remove: (key: string, options = { path: '/' }) => {
+    Cookies.remove(key, options);
   },
 };

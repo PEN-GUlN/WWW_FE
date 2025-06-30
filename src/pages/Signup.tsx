@@ -1,49 +1,50 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import Layout from "@/components/layout/Layout";
-import { EyeOff, EyeOpen } from "@/assets";
-import { AuthContext } from "@/lib/AuthContext";
-import { Interest, SignupRequestType } from "@/apis/user/type";
-import { signup } from "@/apis/user";
+import React from 'react';
+import { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import Layout from '@/components/layout/Layout';
+import { EyeOff, EyeOpen } from '@/assets';
+import { AuthContext } from '@/lib/AuthContext';
+import { Interest, SignupRequestType } from '@/apis/user/type';
+import { signup } from '@/apis/user';
 
 const interests: { value: Interest; label: string }[] = [
-  { value: Interest.DEVELOPMENT, label: "개발" },
-  { value: Interest.ELECTRICAL_ELECTRONIC, label: "전기/전자" },
-  { value: Interest.MANUFACTURING, label: "생산/제조" },
-  { value: Interest.CHEMICAL, label: "화학" },
-  { value: Interest.TEXTILE_APPAREL, label: "섬유/의류" },
-  { value: Interest.MECHANICAL_METAL, label: "기계/금속" },
-  { value: Interest.CONSTRUCTION, label: "건설/토목" },
-  { value: Interest.OFFICE, label: "사무/서비스" },
-  { value: Interest.MEDICAL, label: "의료" },
-  { value: Interest.OTHER, label: "기타" },
+  { value: Interest.DEVELOPMENT, label: '개발' },
+  { value: Interest.ELECTRICAL_ELECTRONIC, label: '전기/전자' },
+  { value: Interest.MANUFACTURING, label: '생산/제조' },
+  { value: Interest.CHEMICAL, label: '화학' },
+  { value: Interest.TEXTILE_APPAREL, label: '섬유/의류' },
+  { value: Interest.MECHANICAL_METAL, label: '기계/금속' },
+  { value: Interest.CONSTRUCTION, label: '건설/토목' },
+  { value: Interest.OFFICE, label: '사무/서비스' },
+  { value: Interest.MEDICAL, label: '의료' },
+  { value: Interest.OTHER, label: '기타' },
 ];
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [mail, setMail] = useState("");
-  const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
   const [interest, setInterest] = useState<Interest[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
   const { isLogin } = useContext(AuthContext);
   const [, setErrors] = useState<Record<string, string>>({
-    mail: "",
-    interest: "",
+    email: '',
+    interest: '',
   });
 
   const validation = () => {
-    const newErrors = { mail: "", interest: "" };
-    if (!mail.trim()) newErrors.mail = "이메일을 입력해주세요";
-    if (interest.length === 0) newErrors.interest = "관심분야를 선택해주세요";
+    const newErrors = { email: '', interest: '' };
+    if (!email.trim()) newErrors.email = '이메일을 입력해주세요';
+    if (interest.length === 0) newErrors.interest = '관심분야를 선택해주세요';
 
     setErrors(newErrors);
-    return Object.values(newErrors).every((error) => error === "");
+    return Object.values(newErrors).every((error) => error === '');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,20 +52,20 @@ const Signup = () => {
 
     if (validation()) {
       const finalForm: SignupRequestType = {
-        mail,
+        email,
         password,
         interest,
       };
 
       try {
         await signup(finalForm);
-        navigate("/jobs");
+        navigate('/jobs');
         isLogin();
       } catch (error) {
         const errorMessage =
           error instanceof Error
             ? error.message
-            : "회원가입 중 오류가 발생했습니다";
+            : '회원가입 중 오류가 발생했습니다';
         setErrors((prev) => ({
           ...prev,
           general: errorMessage,
@@ -95,16 +96,16 @@ const Signup = () => {
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4 rounded-md">
               <div className="space-y-2">
-                <Label htmlFor="mail">이메일</Label>
+                <Label htmlFor="email">이메일</Label>
                 <Input
-                  id="mail"
-                  name="mail"
+                  id="email"
+                  name="email"
                   type="email"
                   autoComplete="email"
                   required
                   placeholder="name@example.com"
-                  value={mail}
-                  onChange={(e) => setMail(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="h-12"
                 />
               </div>
@@ -115,7 +116,7 @@ const Signup = () => {
                   <Input
                     id="password"
                     name="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     required
                     placeholder="••••••••"
@@ -130,7 +131,7 @@ const Signup = () => {
                   >
                     <img
                       src={showPassword ? EyeOpen : EyeOff}
-                      alt={showPassword ? "Hide password" : "Show password"}
+                      alt={showPassword ? 'Hide password' : 'Show password'}
                     />
                   </button>
                 </div>
@@ -150,7 +151,7 @@ const Signup = () => {
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
-                    type={showCheckPassword ? "text" : "password"}
+                    type={showCheckPassword ? 'text' : 'password'}
                     required
                     placeholder="••••••••"
                     value={checkPassword}
@@ -165,7 +166,7 @@ const Signup = () => {
                     <img
                       src={showCheckPassword ? EyeOpen : EyeOff}
                       alt={
-                        showCheckPassword ? "Hide password" : "Show password"
+                        showCheckPassword ? 'Hide password' : 'Show password'
                       }
                     />
                   </button>
@@ -201,7 +202,7 @@ const Signup = () => {
               type="submit"
               className="w-full bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium h-12"
               disabled={
-                !mail || !password || !checkPassword || !interest.length
+                !email || !password || !checkPassword || !interest.length
               }
             >
               회원가입
@@ -209,7 +210,7 @@ const Signup = () => {
 
             <div className="text-center text-sm">
               <p className="text-brand-gray-600">
-                이미 계정이 있으신가요?{" "}
+                이미 계정이 있으신가요?{' '}
                 <Link
                   to="/login"
                   className="font-medium text-brand-yellow hover:underline"
