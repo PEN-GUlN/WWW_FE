@@ -1,3 +1,4 @@
+import { BookmarkListResponseType } from '../bookmark/type';
 import { PostListType } from '../post/type';
 
 export enum Interest {
@@ -33,4 +34,5 @@ export interface myPageType {
   email: string;
   interest: Interest;
   posts: PostListType;
+  bookmarkedPosts: BookmarkListResponseType;
 }

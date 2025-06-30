@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -62,7 +63,9 @@ const Signup = () => {
         isLogin();
       } catch (error) {
         const errorMessage =
-          error instanceof Error ? error.message : '회원가입 중 오류가 발생했습니다';
+          error instanceof Error
+            ? error.message
+            : '회원가입 중 오류가 발생했습니다';
         setErrors((prev) => ({
           ...prev,
           general: errorMessage,
@@ -73,7 +76,9 @@ const Signup = () => {
 
   const handleInterestChange = (value: Interest) => {
     setInterest((prev) =>
-      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value],
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
     );
   };
 
@@ -134,7 +139,9 @@ const Signup = () => {
                   8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다
                 </p>
                 {password && checkPassword && password !== checkPassword && (
-                  <p className="text-red-500 text-xs">비밀번호가 일치하지 않습니다</p>
+                  <p className="text-red-500 text-xs">
+                    비밀번호가 일치하지 않습니다
+                  </p>
                 )}
               </div>
 
@@ -158,7 +165,9 @@ const Signup = () => {
                   >
                     <img
                       src={showCheckPassword ? EyeOpen : EyeOff}
-                      alt={showCheckPassword ? 'Hide password' : 'Show password'}
+                      alt={
+                        showCheckPassword ? 'Hide password' : 'Show password'
+                      }
                     />
                   </button>
                 </div>
@@ -168,13 +177,19 @@ const Signup = () => {
                 <Label>관심 분야</Label>
                 <div className="grid grid-cols-2 gap-4">
                   {interests.map((item) => (
-                    <div key={item.value} className="flex items-center space-x-2">
+                    <div
+                      key={item.value}
+                      className="flex items-center space-x-2"
+                    >
                       <Checkbox
                         id={item.value}
                         checked={interest.includes(item.value)}
                         onCheckedChange={() => handleInterestChange(item.value)}
                       />
-                      <Label htmlFor={item.value} className="font-normal cursor-pointer">
+                      <Label
+                        htmlFor={item.value}
+                        className="font-normal cursor-pointer"
+                      >
                         {item.label}
                       </Label>
                     </div>
@@ -186,7 +201,9 @@ const Signup = () => {
             <Button
               type="submit"
               className="w-full bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium h-12"
-              disabled={!email || !password || !checkPassword || !interest.length}
+              disabled={
+                !email || !password || !checkPassword || !interest.length
+              }
             >
               회원가입
             </Button>
@@ -194,7 +211,10 @@ const Signup = () => {
             <div className="text-center text-sm">
               <p className="text-brand-gray-600">
                 이미 계정이 있으신가요?{' '}
-                <Link to="/login" className="font-medium text-brand-yellow hover:underline">
+                <Link
+                  to="/login"
+                  className="font-medium text-brand-yellow hover:underline"
+                >
                   로그인
                 </Link>
               </p>

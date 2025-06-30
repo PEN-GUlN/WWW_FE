@@ -18,3 +18,8 @@ export const logout = async () => {
   const response = await instance.post(`${router}/logout`);
   return response.data;
 };
+
+export const getMyPage = async () => {
+  const response = await instance.get(`${router}/mypage`);
+  return response.data;
+};

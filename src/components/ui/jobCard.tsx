@@ -1,31 +1,55 @@
-import { Briefcase, MapPin, BarChart } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { JobType } from "@/apis/job/type";
-import { useNavigate } from "react-router-dom";
-import Bookmark from "@/assets/Bookmark.svg";
-import Bookmarked from "@/assets/Bookmarked.svg";
-import { useState } from "react";
+import React from 'react';
+import { Briefcase, MapPin, BarChart } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { JobType } from '@/apis/job/type';
+import { useNavigate } from 'react-router-dom';
+import Bookmark from '@/assets/Bookmark.svg';
+import Bookmarked from '@/assets/Bookmarked.svg';
+import { useState } from 'react';
+import { setBookmark } from '@/apis/bookmark';
 
 interface JobCardProps {
   job: JobType;
   isBookmarked?: boolean;
+  onBookmarkToggle?: (jobId: number, newStatus: boolean) => void;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job, isBookmarked = false }) => {
+const JobCard: React.FC<JobCardProps> = ({
+  job,
+  isBookmarked = false,
+  onBookmarkToggle,
+}) => {
   const navigate = useNavigate();
   const [bookmarked, setBookmarked] = useState(isBookmarked);
+  const [loading, setLoading] = useState(false);
 
   const handleCardClick = () => {
     navigate(`/jobs/${job.id}`);
   };
 
-  const handleBookmarkClick = (e: React.MouseEvent) => {
+  const handleBookmarkClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setBookmarked((prev) => !prev);
+    if (loading) return;
+    setLoading(true);
+    try {
+      const newBookmarkStatus = !bookmarked;
+      await setBookmark({
+        jobId: Number(job.id),
+        status: newBookmarkStatus ? true : false,
+      });
+      setBookmarked(newBookmarkStatus);
+      if (onBookmarkToggle) {
+        onBookmarkToggle(Number(job.id), newBookmarkStatus);
+      }
+    } catch (error) {
+      console.error('북마크 처리 실패', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getDaysAgo = (publishedDate: number) => {
-    return publishedDate === 0 ? "오늘 게시됨" : `${publishedDate}일 전 게시됨`;
+    return publishedDate === 0 ? '오늘 게시됨' : `${publishedDate}일 전 게시됨`;
   };
 
   return (
@@ -38,12 +62,12 @@ const JobCard: React.FC<JobCardProps> = ({ job, isBookmarked = false }) => {
         className="absolute top-0 right-4 z-10"
         onClick={handleBookmarkClick}
         tabIndex={-1}
-        aria-label={bookmarked ? "북마크됨" : "북마크"}
-        style={{ background: "none", border: "none", padding: 0, margin: 0 }}
+        aria-label={bookmarked ? '북마크됨' : '북마크'}
+        style={{ background: 'none', border: 'none', padding: 0, margin: 0 }}
       >
         <img
           src={bookmarked ? Bookmarked : Bookmark}
-          alt={bookmarked ? "Bookmarked" : "Bookmark"}
+          alt={bookmarked ? 'Bookmarked' : 'Bookmark'}
           className="w-7 h-7 m-0 p-0 align-top"
         />
       </button>
