@@ -5,10 +5,11 @@ import CommunityCard from '@/components/ui/communityCard';
 import { Default } from '@/assets';
 import { myPageType } from '@/apis/user/type';
 import { getMyPage } from '@/apis/user';
-import { getAllCommentByPost } from '@/apis/comment';
 import { PostType } from '@/apis/post/type';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AuthContext } from '@/lib/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface PostWithCommentCount extends PostType {
   commentCount: number;
@@ -20,6 +21,8 @@ const MyPage = () => {
   const [postsWithCommentCount, setPostsWithCommentCount] = useState<
     PostWithCommentCount[]
   >([]);
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // myPage api 호출
   const fetchData = async () => {
@@ -28,24 +31,11 @@ const MyPage = () => {
       const data: myPageType = await getMyPage();
       setUser(data);
 
-      // 각 게시글의 댓글 수를 가져오기
-      const postsWithComments = await Promise.all(
-        data.posts.posts.map(async (post) => {
-          try {
-            const commentResponse = await getAllCommentByPost(post.id);
-            return {
-              ...post,
-              commentCount: commentResponse.commentCnt,
-            };
-          } catch (error) {
-            console.error(`게시글 ${post.id} 댓글 수 불러오기 실패`, error);
-            return {
-              ...post,
-              commentCount: 0,
-            };
-          }
-        })
-      );
+      // 각 게시글의 댓글 수를 바로 파싱
+      const postsWithComments = data.posts.posts.map((post) => ({
+        ...post,
+        commentCount: post.commentCnt ?? 0,
+      }));
 
       setPostsWithCommentCount(postsWithComments);
     } catch (error) {
@@ -85,7 +75,7 @@ const MyPage = () => {
         <h1 className="text-3xl font-bold mb-8">마이페이지</h1>
 
         {/* 프로필 영역 */}
-        <div className="flex items-center gap-6 mb-10 p-6 bg-white rounded-xl border border-brand-gray-100 shadow-sm">
+        <div className="flex items-center gap-6 mb-10 p-6 bg-white rounded-xl border border-brand-gray-100 shadow-sm relative">
           <Avatar className="h-20 w-20">
             <AvatarImage src={Default} alt={user.email} />
             <AvatarFallback>{user.email.substring(0, 2)}</AvatarFallback>
@@ -96,6 +86,18 @@ const MyPage = () => {
               관심분야: {user.interest}
             </div>
           </div>
+          {/* 로그아웃 버튼 */}
+          <button
+            onClick={() => {
+              logout();
+              navigate('/login');
+            }}
+            title="로그아웃"
+            className="absolute bottom-4 right-4 text-2xl hover:scale-110 transition-transform"
+            aria-label="로그아웃"
+          >
+            🏃‍♂️
+          </button>
         </div>
 
         {/* 탭으로 구분된 콘텐츠 */}
