@@ -15,7 +15,7 @@ export const login = async (request: LoginRequestType) => {
 };
 
 export const logout = async () => {
-  const response = await instance.post(`${router}/logout`);
+  const response = await instance.post(`${authRouter}/logout`);
   return response.data;
 };
 

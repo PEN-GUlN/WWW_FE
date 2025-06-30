@@ -9,7 +9,7 @@ export const cookie = {
     Cookies.set(key, value, options);
   },
 
-  remove: (key: string) => {
-    Cookies.remove(key);
+  remove: (key: string, options = { path: '/' }) => {
+    Cookies.remove(key, options);
   },
 };

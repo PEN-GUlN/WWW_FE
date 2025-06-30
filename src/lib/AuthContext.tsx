@@ -35,12 +35,19 @@ export const AuthProvider = ({ children }: AuthChildrenType) => {
     checkSession();
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
+    } catch {
+      // ignore
+    }
     cookie.remove('connect.sid');
     setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, isLogin, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isLoggedIn, isLogin, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
