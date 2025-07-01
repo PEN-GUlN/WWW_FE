@@ -36,7 +36,6 @@ const CommunityPostDetail = () => {
     enabled: !!id,
   });
   const post = data || null;
-  console.log('게시글 데이터:', post);
 
   // 댓글 작성 mutation
   const createCommentMutation = useMutation({
