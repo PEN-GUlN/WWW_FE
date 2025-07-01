@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, useState, useEffect } from 'react';
 import { cookie } from './Cookie';
 
@@ -18,17 +19,26 @@ type AuthChildrenType = {
 };
 
 export const AuthProvider = ({ children }: AuthChildrenType) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
 
   useEffect(() => {
     checkSession();
   }, []);
 
-  const checkSession = () => {
-    const session = cookie.get('connect.sid');
-    console.log('Session ID:', session);
+  const checkSession = async () => {
+    try {
+      const res = await fetch('/auth/status', { credentials: 'include' });
 
-    setIsLoggedIn(!!session);
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        setIsLoggedIn(!!data.isLoggedIn);
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (e) {
+      setIsLoggedIn(false);
+    }
   };
 
   const isLogin = () => {
@@ -41,7 +51,7 @@ export const AuthProvider = ({ children }: AuthChildrenType) => {
     } catch {
       // ignore
     }
-    cookie.remove('connect.sid');
+    cookie.remove('.sid');
     setIsLoggedIn(false);
   };
 

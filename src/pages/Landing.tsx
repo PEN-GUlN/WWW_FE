@@ -2,9 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Briefcase, Users } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import { useContext } from 'react';
+import { AuthContext } from '@/lib/AuthContext';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
 
   return (
     <Layout>
@@ -24,25 +27,27 @@ const Landing = () => {
               다양한 글로벌 취업 정보와 자료를 공유하고, 함께 성장하는
               커뮤니티에 참여하세요.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                variant="outline"
-                className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
-                size="lg"
-                onClick={() => navigate('/login')}
-              >
-                로그인하기
-              </Button>
+            {!isLoggedIn && (
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  variant="outline"
+                  className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
+                  size="lg"
+                  onClick={() => navigate('/login')}
+                >
+                  로그인하기
+                </Button>
 
-              <Button
-                variant="outline"
-                className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
-                size="lg"
-                onClick={() => navigate('/signup')}
-              >
-                회원가입하기
-              </Button>
-            </div>
+                <Button
+                  variant="outline"
+                  className="font-medium text-base px-8 py-6 h-auto animate-fade-in animation-delay-300"
+                  size="lg"
+                  onClick={() => navigate('/signup')}
+                >
+                  회원가입하기
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -135,16 +140,18 @@ const Landing = () => {
               Word Wide Work와 함께 당신의 커리어를 발전시키고, 새로운 기회를
               찾아보세요. 지금 회원가입하고 다양한 기능을 이용해보세요.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/signup">
-                <Button
-                  className="bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium text-base px-8 py-6 h-auto"
-                  size="lg"
-                >
-                  시작하기
-                </Button>
-              </Link>
-            </div>
+            {!isLoggedIn && (
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/signup">
+                  <Button
+                    className="bg-brand-yellow hover:bg-brand-yellow-dark text-black font-medium text-base px-8 py-6 h-auto"
+                    size="lg"
+                  >
+                    시작하기
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>

@@ -1,8 +1,6 @@
-import { useState, useEffect, useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/assets';
-import { Menu, X } from 'lucide-react';
-import { AuthContext } from '@/lib/AuthContext';
 
 const NAVIGATION_ROUTES = [
   // { path: "/", label: "메인" },
@@ -13,15 +11,13 @@ const NAVIGATION_ROUTES = [
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
 
+  // /, /login, /signup 페이지에서는 네비게이션만 숨김
   const isAuthPage =
+    location.pathname === '/' ||
     location.pathname === '/signup' ||
-    location.pathname === '/login' ||
-    location.pathname === '/';
+    location.pathname === '/login';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,8 +27,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => setIsMenuOpen(false);
   const isActive = (path: string) => location.pathname === path.split('?')[0];
 
   return (
@@ -44,14 +38,14 @@ const Header = () => {
       }`}
     >
       <div className="container px-4 md:px-6 mx-auto flex items-center justify-between">
-        {/* 로고 */}
-        <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
+        {/* 로고는 항상 보임 */}
+        <Link to="/" className="flex items-center gap-2">
           <img src={Logo} alt="logo" className="h-8 w-auto" />
         </Link>
 
-        {/* 메뉴 (로그인/회원가입 페이지에서는 전체 숨김) */}
+        {/* 네비게이션은 /, /login, /signup에서만 숨김 */}
         {!isAuthPage && (
-          <div className="hidden md:flex items-center gap-8">
+          <div className="flex items-center gap-8">
             {NAVIGATION_ROUTES.map(({ path, label }) => (
               <Link
                 key={path}
@@ -65,38 +59,6 @@ const Header = () => {
             ))}
           </div>
         )}
-
-        {/* 로그인/회원가입 또는 홈 버튼 */}
-        {isAuthPage && (
-          <div className="hidden md:flex items-center gap-4">
-            {isLoggedIn ? (
-              <button
-                onClick={() => navigate('/')}
-                className="text-sm font-medium"
-              >
-                홈
-              </button>
-            ) : (
-              <>
-                <Link to="/login">
-                  <button className="text-sm font-medium">로그인</button>
-                </Link>
-                <Link to="/signup">
-                  <button className="text-sm font-medium">회원가입</button>
-                </Link>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* 모바일 메뉴 버튼 */}
-        <button className="md:hidden" onClick={toggleMenu}>
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
       </div>
     </nav>
   );
