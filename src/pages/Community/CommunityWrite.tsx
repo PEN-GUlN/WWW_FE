@@ -66,6 +66,7 @@ const CommunityWrite = () => {
 
   // 상태
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [customTags, setCustomTags] = useState<string[]>([]); // 커스텀 태그만 따로 관리
   const [customTag, setCustomTag] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -81,20 +82,33 @@ const CommunityWrite = () => {
 
   // 태그 추가
   const handleAddTag = (tag: string) => {
+    if (tag.length < 2 || tag.length > 20) {
+      toast.error('태그는 2자 이상 20자 이하로 입력해주세요.');
+      return;
+    }
+
     if (!selectedTags.includes(tag) && selectedTags.length < 5) {
       setSelectedTags([...selectedTags, tag]);
+    } else if (selectedTags.includes(tag)) {
+      toast.error('이미 추가된 태그입니다.');
+    } else {
+      toast.error('태그는 최대 5개까지 추가할 수 있습니다.');
     }
   };
 
   // 태그 삭제
   const handleRemoveTag = (tag: string) => {
     setSelectedTags(selectedTags.filter((t) => t !== tag));
+    setCustomTags(customTags.filter((t) => t !== tag)); // 커스텀 태그에서도 제거
   };
 
   // 커스텀 태그 추가
-  const handleAddCustomTag = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAddCustomTag = () => {
     const trimmedTag = customTag.trim();
+
+    if (!trimmedTag) {
+      return;
+    }
 
     if (trimmedTag.length < 2 || trimmedTag.length > 20) {
       toast.error('태그는 2자 이상 20자 이하로 입력해주세요.');
@@ -108,7 +122,12 @@ const CommunityWrite = () => {
 
     if (!selectedTags.includes(trimmedTag) && selectedTags.length < 5) {
       setSelectedTags([...selectedTags, trimmedTag]);
+      setCustomTags([...customTags, trimmedTag]); // 커스텀 태그 목록에 추가
       setCustomTag('');
+    } else if (selectedTags.includes(trimmedTag)) {
+      toast.error('이미 추가된 태그입니다.');
+    } else {
+      toast.error('태그는 최대 5개까지 추가할 수 있습니다.');
     }
   };
 
@@ -274,7 +293,7 @@ const CommunityWrite = () => {
                   ))}
                 </div>
 
-                <form onSubmit={handleAddCustomTag} className="flex gap-2">
+                <div className="flex gap-2">
                   <div className="relative flex-1">
                     <TagIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-gray-400" />
                     <Input
@@ -282,18 +301,26 @@ const CommunityWrite = () => {
                       placeholder="커스텀 태그 추가"
                       value={customTag}
                       onChange={(e) => setCustomTag(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddCustomTag();
+                          setCustomTag(''); // Enter 키로 제출할 때도 텍스트 박스 비우기
+                        }
+                      }}
                       className="pl-10"
                       disabled={selectedTags.length >= 5}
                     />
                   </div>
                   <Button
-                    type="submit"
+                    type="button"
                     variant="outline"
                     disabled={!customTag || selectedTags.length >= 5}
+                    onClick={handleAddCustomTag}
                   >
                     <Plus className="h-4 w-4 mr-2" /> 추가
                   </Button>
-                </form>
+                </div>
               </div>
             </div>
 

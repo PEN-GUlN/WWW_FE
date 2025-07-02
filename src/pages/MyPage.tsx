@@ -83,7 +83,7 @@ const MyPage = () => {
           <div>
             <div className="text-xl font-semibold mb-1">{user.email}</div>
             <div className="text-brand-gray-600 text-sm">
-              관심분야: {user.interest}
+              관심분야: {user.interest.join(', ')}
             </div>
           </div>
           {/* 로그아웃 버튼 */}

@@ -51,16 +51,10 @@ export enum PostTagEnum {
   TIP = '취업팁',
 }
 
-export enum LocationTagEnum {
-  USA = '미국취업',
-  JAPAN = '일본취업',
-  SINGAPORE = '싱가포르취업',
-  EUROPE = '유럽취업',
-}
-
 export enum IndustryTagEnum {
   SOFTWARE = '소프트웨어',
   FINANCE = '금융',
   MANUFACTURING = '제조',
   MEDICAL = '의료',
+  OFFICE_SERVICE = '사무',
 }
