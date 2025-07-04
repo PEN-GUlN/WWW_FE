@@ -32,7 +32,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import {
   IndustryTagEnum,
-  LocationTagEnum,
   PostRequestType,
   PostTagEnum,
   PostTypeEnum,
@@ -45,21 +44,13 @@ const tagCategories = {
     value: key.toLowerCase(),
     label,
   })),
-  locations: Object.entries(LocationTagEnum).map(([key, label]) => ({
-    value: key.toLowerCase(),
-    label,
-  })),
   industries: Object.entries(IndustryTagEnum).map(([key, label]) => ({
     value: key.toLowerCase(),
     label,
   })),
 };
 
-const tagOptions = [
-  ...tagCategories.postTypes,
-  ...tagCategories.locations,
-  ...tagCategories.industries,
-];
+const tagOptions = [...tagCategories.postTypes, ...tagCategories.industries];
 
 const CommunityWrite = () => {
   const navigate = useNavigate();
@@ -218,6 +209,11 @@ const CommunityWrite = () => {
                       className="h-12"
                     />
                   </FormControl>
+                  <div className="flex justify-end">
+                    <span className="text-sm text-brand-gray-500">
+                      {field.value?.length || 0}/50
+                    </span>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -237,6 +233,11 @@ const CommunityWrite = () => {
                       className="min-h-[300px]"
                     />
                   </FormControl>
+                  <div className="flex justify-end">
+                    <span className="text-sm text-brand-gray-500">
+                      {field.value?.length || 0}/10000
+                    </span>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}

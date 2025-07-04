@@ -9,6 +9,14 @@ const Landing = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useContext(AuthContext);
 
+  const handleServiceClick = (path: string) => {
+    if (isLoggedIn) {
+      navigate(path);
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <Layout>
       <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-b from-white to-brand-gray-50">
@@ -71,8 +79,8 @@ const Landing = () => {
                 전 세계 다양한 지역의 채용 정보를 한눈에 확인하고 필터링할 수
                 있습니다.
               </p>
-              <Link
-                to="/jobs"
+              <button
+                onClick={() => handleServiceClick('/jobs')}
                 className="text-sm font-medium text-brand-yellow hover:underline inline-flex items-center gap-1"
               >
                 자세히 보기
@@ -91,7 +99,7 @@ const Landing = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </Link>
+              </button>
             </div>
 
             <div className="bg-white rounded-2xl p-8 border border-brand-gray-100 shadow-sm hover:shadow-md transition-shadow hover-lift">
@@ -103,8 +111,8 @@ const Landing = () => {
                 취업 준비생들과 경험을 공유하고 질문하며 함께 성장하는
                 공간입니다.
               </p>
-              <Link
-                to="/community"
+              <button
+                onClick={() => handleServiceClick('/community')}
                 className="text-sm font-medium text-brand-yellow hover:underline inline-flex items-center gap-1"
               >
                 자세히 보기
@@ -123,7 +131,7 @@ const Landing = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
