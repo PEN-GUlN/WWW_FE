@@ -116,7 +116,7 @@ const JobDetail = () => {
               {job.hasRemote ? '가능' : '불가'}
             </InfoRow>
             <InfoRow label="국가">
-              {job.countryName} ({job.countryCode})
+              {job.countryName} {job.countryCode ? `(${job.countryCode})` : ''}
             </InfoRow>
             {job.stateName && <InfoRow label="주">{job.stateName}</InfoRow>}
             {job.cityName && <InfoRow label="도시">{job.cityName}</InfoRow>}

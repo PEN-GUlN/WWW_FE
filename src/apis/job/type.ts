@@ -16,6 +16,7 @@ export interface JobType {
   experienceLevel: string;
   language: string;
   isBookmarked: boolean;
+  countryCode: string;
 }
 
 export interface JobListType {
